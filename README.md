@@ -37,9 +37,12 @@ Project Social Platform/
 ## 📊 Dataset Information
 
 ### 📄 **Data Source & Attribution**
-- **Original Source**: Kaggle - Social Media Usage and Emotional Wellbeing Dataset
+- **Original Source**: [Social Media Usage and Emotional Well-being Dataset](https://www.kaggle.com/datasets/emirhanai/social-media-usage-and-emotional-well-being) - Kaggle
+- **Author**: emirhanai
+- **Platform**: Kaggle Datasets
 - **Original Size**: ~1,249 records across multiple social media platforms
 - **Collection Method**: Survey-based data collection from social media users aged 21-35
+- **License**: Public Dataset (Kaggle)
 
 ### 🧹 **Data Quality & Preprocessing**
 **Important Note**: The original Kaggle dataset contained significant data quality issues that required extensive preprocessing:
@@ -278,9 +281,11 @@ Feel free to fork this project and submit pull requests for improvements:
 
 ### **Original Dataset Source**
 - **Platform**: Kaggle
-- **Dataset**: Social Media Usage and Emotional Wellbeing 
-- **Original Contributors**: Various data contributors on Kaggle platform
+- **Dataset**: [Social Media Usage and Emotional Well-being](https://www.kaggle.com/datasets/emirhanai/social-media-usage-and-emotional-well-being)
+- **Author**: emirhanai
+- **Original URL**: https://www.kaggle.com/datasets/emirhanai/social-media-usage-and-emotional-well-being
 - **License**: Public domain / Open source (as per Kaggle terms)
+- **Access Date**: November 2025
 
 ### **Data Processing Citation**
 If using this cleaned dataset for research or academic purposes, please cite:
