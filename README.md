@@ -126,10 +126,27 @@ Project Social Platform/
 
 ### Running the Analysis
 
-Execute the main script:
+Execute the main script for the complete experience:
 ```bash
 python "Social Platform.py"
 ```
+
+**🎮 Interactive Experience**: After the analysis completes, you'll be prompted to explore additional features:
+- Enter `y` for an interactive menu with 8 different demo options
+- Press Enter to finish and see just the core analysis
+
+### 🎮 **Integrated Demo System**
+
+The main script now includes a comprehensive interactive menu:
+
+1. **🎲 Generate More Random Users** - Create fresh user profiles
+2. **🎯 Create Extreme User Scenarios** - Test edge cases  
+3. **🌐 Platform-Specific Showcase** - Focus on individual platforms
+4. **⚡ Quick Single User Prediction** - Instant random prediction
+5. **🔄 Compare Multiple Generations** - Side-by-side user comparisons
+6. **📊 Model Performance Deep Dive** - Detailed algorithm analysis
+7. **🚀 Interactive Prediction Mode** - Manual user input system
+8. **❌ Exit** - Return to terminal
 
 ### 🔬 **Advanced Model Comparison Suite**
 
@@ -215,14 +232,17 @@ interactive_prediction()
 ```
 
 #### **Example Usage**
-Run the comprehensive example files:
+The main script includes everything:
 ```bash
-# Static reference examples  
-python predict_examples.py
+# Complete system with interactive options
+python "Social Platform.py"
 
-# Dynamic user generation showcase
-python dynamic_demo.py
+# Optional: Individual example files (legacy)
+python predict_examples.py     # Static reference examples  
+python dynamic_demo.py         # Dynamic showcase (now integrated)
 ```
+
+**Recommended**: Use the main script's interactive menu for the best experience!
 
 #### **Supported Parameters**
 - **Age**: User's age (numeric, 13-65)

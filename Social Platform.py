@@ -688,11 +688,206 @@ demo_predictions()
 # Run scenario testing
 generate_custom_user_scenarios()
 
-print(f"\n�🎉 Social Platform Emotion Prediction Complete!")
+# ========================================
+# 🎮 INTERACTIVE DEMO MENU SYSTEM
+# ========================================
+
+def interactive_demo_menu():
+    """Interactive menu for different demo options"""
+    print(f"\n🎮 INTERACTIVE DEMO MENU")
+    print(f"="*50)
+    print(f"Choose what you'd like to explore:")
+    print(f"")
+    print(f"1️⃣  🎲 Generate More Random Users")
+    print(f"2️⃣  🎯 Create Extreme User Scenarios") 
+    print(f"3️⃣  🌐 Platform-Specific User Showcase")
+    print(f"4️⃣  ⚡ Quick Single User Prediction")
+    print(f"5️⃣  🔄 Compare Multiple Random Generations")
+    print(f"6️⃣  📊 Model Performance Deep Dive")
+    print(f"7️⃣  🚀 Interactive Prediction Mode")
+    print(f"8️⃣  ❌ Exit")
+    print(f"")
+    
+    while True:
+        try:
+            choice = input("Enter your choice (1-8): ").strip()
+            
+            if choice == '1':
+                print(f"\n� GENERATING NEW RANDOM USERS...")
+                demo_predictions()
+                
+            elif choice == '2':
+                print(f"\n🎯 EXTREME SCENARIO TESTING...")
+                generate_custom_user_scenarios()
+                
+            elif choice == '3':
+                platform_showcase()
+                
+            elif choice == '4':
+                quick_prediction()
+                
+            elif choice == '5':
+                multiple_generations_comparison()
+                
+            elif choice == '6':
+                model_performance_deep_dive()
+                
+            elif choice == '7':
+                interactive_prediction()
+                
+            elif choice == '8':
+                print(f"\n👋 Thanks for exploring the Social Platform Emotion Prediction system!")
+                break
+                
+            else:
+                print(f"❌ Please enter a number between 1-8")
+                
+            print(f"\n" + "="*50)
+            print(f"🎮 What would you like to try next?")
+            print(f"1️⃣Random Users  2️⃣Extreme  3️⃣Platforms  4️⃣Quick  5️⃣Compare  6️⃣Performance  7️⃣Interactive  8️⃣Exit")
+            
+        except KeyboardInterrupt:
+            print(f"\n\n👋 Goodbye!")
+            break
+        except Exception as e:
+            print(f"❌ Error: {e}. Please try again.")
+
+def platform_showcase():
+    """Showcase users from specific platforms"""
+    print(f"\n🌐 PLATFORM-SPECIFIC USER SHOWCASE")
+    print(f"="*50)
+    
+    platforms = ['Instagram', 'LinkedIn', 'TikTok', 'Facebook', 'Twitter', 'Snapchat', 'Whatsapp', 'Telegram']
+    
+    print("Available platforms:")
+    for i, platform in enumerate(platforms, 1):
+        print(f"{i}. {platform}")
+    
+    try:
+        choice = input(f"\nChoose platform (1-{len(platforms)}) or 'all' for all platforms: ").strip().lower()
+        
+        if choice == 'all':
+            selected_platforms = platforms
+        else:
+            idx = int(choice) - 1
+            if 0 <= idx < len(platforms):
+                selected_platforms = [platforms[idx]]
+            else:
+                print("❌ Invalid choice")
+                return
+        
+        for platform in selected_platforms:
+            print(f"\n📱 {platform} Users:")
+            print("-" * 20)
+            
+            # Generate users for this platform
+            attempts = 0
+            found_users = 0
+            
+            while found_users < 2 and attempts < 15:
+                user = generate_random_user()
+                attempts += 1
+                
+                if user['display_platform'] == platform:
+                    found_users += 1
+                    emotion, confidence = predict_user_emotion(
+                        user['age'], user['gender'], user['prediction_platform'],
+                        user['daily_usage'], user['posts'], user['likes'], 
+                        user['comments'], user['messages']
+                    )
+                    
+                    confidence_emoji = "🎯" if confidence >= 80 else "📈" if confidence >= 60 else "⚖️" if confidence >= 40 else "❓"
+                    print(f"  👤 {user['user_type']}: {user['age']}yr {user['gender']}")
+                    print(f"     Usage: {user['daily_usage']}min/day, {user['posts']} posts")
+                    print(f"     {confidence_emoji} {emotion} ({confidence:.1f}% confidence)")
+                    
+    except ValueError:
+        print("❌ Please enter a valid number")
+
+def quick_prediction():
+    """Quick single user prediction"""
+    print(f"\n⚡ QUICK USER PREDICTION")
+    print(f"="*40)
+    
+    user = generate_random_user()
+    emotion, confidence = predict_user_emotion(
+        user['age'], user['gender'], user['prediction_platform'],
+        user['daily_usage'], user['posts'], user['likes'], 
+        user['comments'], user['messages']
+    )
+    
+    print(f"👤 Generated User: {user['name']}")
+    print(f"📊 Profile: {user['age']}yr {user['gender']} on {user['display_platform']}")
+    print(f"⏱️ Activity: {user['daily_usage']}min/day, {user['posts']} posts")
+    print(f"💬 Engagement: {user['likes']} likes, {user['comments']} comments, {user['messages']} messages")
+    
+    confidence_emoji = "🎯" if confidence >= 80 else "📈" if confidence >= 60 else "⚖️" if confidence >= 40 else "❓"
+    print(f"{confidence_emoji} Prediction: {emotion} ({confidence:.1f}% confidence)")
+
+def multiple_generations_comparison():
+    """Compare multiple user generations"""
+    print(f"\n� MULTIPLE GENERATION COMPARISON")
+    print(f"="*50)
+    
+    try:
+        num_generations = int(input("How many user generations to compare (1-10)? ").strip())
+        num_generations = max(1, min(10, num_generations))
+        
+        for gen in range(num_generations):
+            print(f"\n🎲 Generation #{gen + 1}:")
+            print("-" * 25)
+            
+            for i in range(2):  # 2 users per generation
+                user = generate_random_user()
+                emotion, confidence = predict_user_emotion(
+                    user['age'], user['gender'], user['prediction_platform'],
+                    user['daily_usage'], user['posts'], user['likes'], 
+                    user['comments'], user['messages']
+                )
+                
+                print(f"  {i+1}. {user['name'][:20]:20s} → {emotion} ({confidence:.1f}%)")
+                
+    except ValueError:
+        print("❌ Please enter a valid number")
+
+def model_performance_deep_dive():
+    """Deep dive into model performance"""
+    print(f"\n📊 MODEL PERFORMANCE DEEP DIVE")
+    print(f"="*50)
+    
+    # Show the best model details
+    print(f"🏆 Current Best Model: {best_model_name}")
+    print(f"🎯 Accuracy: {results_df.iloc[best_model_idx]['Accuracy']:.4f}")
+    print(f"📈 F1-Score: {results_df.iloc[best_model_idx]['F1_Score']:.4f}")
+    if results_df.iloc[best_model_idx]['ROC_AUC']:
+        print(f"🎪 ROC-AUC: {results_df.iloc[best_model_idx]['ROC_AUC']:.4f}")
+    
+    print(f"\n📋 All Model Comparison:")
+    for _, row in results_df.iterrows():
+        print(f"  • {row['Model']}: {row['Accuracy']:.3f} accuracy")
+    
+    print(f"\n🔝 Top Features:")
+    if hasattr(clf, 'feature_importances_'):
+        for i, (feature, importance) in enumerate(zip(feature_columns, clf.feature_importances_)[:5], 1):
+            print(f"  {i}. {feature}: {importance:.3f}")
+
+print(f"\n🎉 Social Platform Emotion Prediction Complete!")
 print(f"Your AI model successfully predicts emotions from social media behavior!")
-print(f"\n💡 New Features Added:")
-print(f"  🔮 Unknown user prediction function")
-print(f"  🎭 Demo predictions with sample users")
+
+print(f"\n💡 System Features:")
+print(f"  🔬 Advanced model comparison with {len(model_results)} algorithms")
+print(f"  🎲 Dynamic user generation with 8+ platforms")
 print(f"  🎯 Interactive prediction system")
-print(f"\nTo use interactive prediction, call: interactive_prediction()")
+print(f"  📊 {best_accuracy*100:.1f}% accuracy with {best_model_name}")
+
+print(f"\n🎮 EXPLORE MORE:")
+print(f"Would you like to explore additional features?")
+response = input(f"Enter 'y' for interactive menu, or press Enter to finish: ").strip().lower()
+
+if response in ['y', 'yes']:
+    interactive_demo_menu()
+else:
+    print(f"\n✨ Thanks for using Social Platform Emotion Prediction!")
+    print(f"🚀 Your AI system is ready for production use!")
+
 print(f"="*50)
