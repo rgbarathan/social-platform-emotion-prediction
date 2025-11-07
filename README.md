@@ -126,6 +126,54 @@ Execute the main script:
 python "Social Platform.py"
 ```
 
+### 🔮 Unknown User Prediction
+
+**NEW FEATURE**: Predict emotions for new users not in the training dataset!
+
+#### **Quick Prediction Function**
+```python
+# After running the main script, use:
+emotion, confidence = predict_user_emotion(
+    age=25,
+    gender='Female',  # 'Male' or 'Female'
+    platform='Instagram',  # Available: Facebook, Instagram, Twitter, LinkedIn, Snapchat, Whatsapp, Telegram
+    daily_usage_time=120,  # Minutes per day
+    posts_per_day=2,
+    likes_received=30,
+    comments_received=8,
+    messages_sent=25
+)
+print(f"Predicted Emotion: {emotion} (Confidence: {confidence:.1f}%)")
+```
+
+#### **Interactive Prediction System**
+```python
+# Run interactive mode for multiple predictions
+interactive_prediction()
+```
+
+#### **Example Usage**
+Run the comprehensive example file:
+```bash
+python predict_examples.py
+```
+
+#### **Supported Parameters**
+- **Age**: User's age (numeric, 13-65)
+- **Gender**: 'Male' or 'Female'  
+- **Platform**: Facebook, Instagram, Twitter, LinkedIn, Snapchat, Whatsapp, Telegram
+- **Daily Usage Time**: Minutes spent daily (1-1440)
+- **Posts Per Day**: Average posts published (0-50)
+- **Likes Received**: Average daily likes (0-10,000)
+- **Comments Received**: Average daily comments (0-1,000)
+- **Messages Sent**: Daily messages sent (0-500)
+
+#### **Confidence Interpretation**
+- 🟢 **80-100%**: Very High Confidence
+- 🟡 **60-79%**: High Confidence  
+- 🟠 **40-59%**: Moderate Confidence
+- 🔴 **<40%**: Low Confidence (unusual pattern)
+
 ## 📈 Model Performance
 
 ### Results Summary:
