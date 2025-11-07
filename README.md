@@ -9,6 +9,7 @@ This project analyzes social media user behavior to predict dominant emotions us
 ### 🎯 Key Features
 
 - **Advanced Model Comparison**: Tests 4+ algorithms automatically
+- **Dynamic User Generation**: Creates new random users each run 🆕
 - **Emotion Classification**: Predicts 7 different emotional states  
 - **High Accuracy**: 98% classification accuracy with Random Forest
 - **Outstanding Performance**: 99.8% ROC-AUC score
@@ -160,6 +161,37 @@ python "Social Platform.py"
 
 **NEW FEATURE**: Predict emotions for new users not in the training dataset!
 
+#### **🎲 Dynamic User Generation** 🆕
+The system now generates **completely new random users every time** you run it:
+
+- **8 Platform Types**: Instagram, Facebook, Twitter, LinkedIn, Snapchat, TikTok, WhatsApp, Telegram
+- **Realistic Patterns**: Age-appropriate demographics and platform-specific behaviors
+- **Diverse Scenarios**: From social media addicts to digital minimalists
+- **Fresh Each Run**: Never see the same demo users twice!
+
+```bash
+# Every run shows different random users
+python "Social Platform.py"
+```
+
+**Example Dynamic Output:**
+```
+🎲 New random users created each run!
+
+👤 Random User #1: Content Creator (Instagram)
+   📊 Profile: 24yr Female on Instagram  
+   ⏱️ Usage: 180 min/day, 4 posts/day
+   💬 Engagement: 95 likes, 12 comments, 35 messages
+   🎯 Predicted Emotion: Happiness (Confidence: 67.2%)
+```
+
+#### **📱 Platform-Specific User Types**
+- **Instagram**: Influencer, Content Creator, Photo Enthusiast, Story Addict
+- **LinkedIn**: Professional, Job Seeker, Industry Expert, Networker  
+- **TikTok**: Creator, Viral Chaser, Dance Enthusiast, Comedy Fan
+- **Facebook**: Family User, News Reader, Community Member, Casual Browser
+- **And more**: Twitter activists, Snapchat story posters, WhatsApp chatters
+
 #### **Quick Prediction Function**
 ```python
 # After running the main script, use:
@@ -183,9 +215,13 @@ interactive_prediction()
 ```
 
 #### **Example Usage**
-Run the comprehensive example file:
+Run the comprehensive example files:
 ```bash
+# Static reference examples  
 python predict_examples.py
+
+# Dynamic user generation showcase
+python dynamic_demo.py
 ```
 
 #### **Supported Parameters**

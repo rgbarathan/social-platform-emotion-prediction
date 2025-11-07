@@ -489,49 +489,204 @@ def interactive_prediction():
         except Exception as e:
             print(f"❌ Error: {str(e)}")
 
+import random
+import datetime
+
+def generate_random_user():
+    """Generate a random user profile with realistic social media behavior"""
+    
+    # Platform-specific profiles with realistic ranges
+    platforms_data = {
+        'Instagram': {
+            'age_range': (16, 35), 'usage_range': (60, 300),
+            'posts_range': (0, 8), 'likes_range': (10, 200),
+            'comments_range': (2, 30), 'messages_range': (15, 80),
+            'user_types': ['Influencer', 'Content Creator', 'Photo Enthusiast', 'Story Addict']
+        },
+        'TikTok': {  # Note: Will use Snapchat for prediction since TikTok not in training data
+            'age_range': (13, 25), 'usage_range': (90, 360),
+            'posts_range': (1, 10), 'likes_range': (20, 500),
+            'comments_range': (5, 50), 'messages_range': (10, 60),
+            'user_types': ['Creator', 'Viral Chaser', 'Dance Enthusiast', 'Comedy Fan']
+        },
+        'LinkedIn': {
+            'age_range': (22, 55), 'usage_range': (10, 90),
+            'posts_range': (0, 3), 'likes_range': (2, 50),
+            'comments_range': (0, 15), 'messages_range': (5, 30),
+            'user_types': ['Professional', 'Job Seeker', 'Industry Expert', 'Networker']
+        },
+        'Facebook': {
+            'age_range': (25, 65), 'usage_range': (30, 180),
+            'posts_range': (0, 5), 'likes_range': (5, 80),
+            'comments_range': (1, 20), 'messages_range': (5, 50),
+            'user_types': ['Family User', 'News Reader', 'Community Member', 'Casual Browser']
+        },
+        'Twitter': {
+            'age_range': (18, 50), 'usage_range': (30, 240),
+            'posts_range': (0, 15), 'likes_range': (5, 100),
+            'comments_range': (2, 25), 'messages_range': (3, 40),
+            'user_types': ['News Follower', 'Opinion Sharer', 'Trend Watcher', 'Activist']
+        },
+        'Snapchat': {
+            'age_range': (13, 30), 'usage_range': (60, 300),
+            'posts_range': (2, 12), 'likes_range': (15, 150),
+            'comments_range': (3, 25), 'messages_range': (20, 100),
+            'user_types': ['Story Poster', 'Snap Streaker', 'Filter Fan', 'Chat Heavy']
+        },
+        'Whatsapp': {
+            'age_range': (16, 60), 'usage_range': (30, 200),
+            'posts_range': (0, 2), 'likes_range': (0, 10),
+            'comments_range': (0, 5), 'messages_range': (20, 200),
+            'user_types': ['Family Chatter', 'Work Communicator', 'Group Admin', 'Voice Note Fan']
+        },
+        'Telegram': {
+            'age_range': (18, 45), 'usage_range': (20, 150),
+            'posts_range': (0, 3), 'likes_range': (0, 20),
+            'comments_range': (0, 8), 'messages_range': (10, 100),
+            'user_types': ['Channel Follower', 'Group Member', 'Privacy Seeker', 'Bot User']
+        }
+    }
+    
+    # Select random platform and get its data
+    platform = random.choice(list(platforms_data.keys()))
+    
+    # Handle TikTok by using Snapchat for prediction (since TikTok not in training data)
+    prediction_platform = 'Snapchat' if platform == 'TikTok' else platform
+    
+    platform_info = platforms_data[platform]
+    
+    # Generate random user characteristics
+    age = random.randint(*platform_info['age_range'])
+    gender = random.choice(['Male', 'Female'])
+    user_type = random.choice(platform_info['user_types'])
+    
+    # Generate realistic usage patterns with some correlation
+    daily_usage = random.randint(*platform_info['usage_range'])
+    
+    # Posts correlate somewhat with usage time and age
+    base_posts = random.randint(*platform_info['posts_range'])
+    posts_per_day = max(0, base_posts + random.randint(-1, 2))
+    
+    # Likes generally correlate with posts and usage
+    likes_base = random.randint(*platform_info['likes_range'])
+    likes_modifier = 1.5 if posts_per_day > 3 else 0.7 if posts_per_day == 0 else 1.0
+    likes_received = max(0, int(likes_base * likes_modifier))
+    
+    # Comments are typically lower than likes
+    comments_base = random.randint(*platform_info['comments_range'])
+    comments_received = max(0, min(comments_base, likes_received // 3))
+    
+    # Messages vary by platform type and usage
+    messages_sent = random.randint(*platform_info['messages_range'])
+    
+    return {
+        'name': f"{user_type} ({platform})",
+        'display_platform': platform,
+        'prediction_platform': prediction_platform,
+        'age': age,
+        'gender': gender,
+        'daily_usage': daily_usage,
+        'posts': posts_per_day,
+        'likes': likes_received,
+        'comments': comments_received,
+        'messages': messages_sent,
+        'user_type': user_type
+    }
+
 # Example predictions for demonstration
 def demo_predictions():
-    """Demonstrate predictions with example users"""
-    print(f"\n🎭 Demo: Emotion Predictions for Sample Users")
-    print(f"="*50)
+    """Demonstrate predictions with dynamically generated users"""
+    print(f"\n🎭 Demo: Dynamic Emotion Predictions for Random Users")
+    print(f"="*55)
+    print(f"⚡ Generated at: {datetime.datetime.now().strftime('%H:%M:%S')}")
+    print(f"🎲 New random users created each run!")
     
-    # Sample users with different profiles
-    sample_users = [
-        {
-            'name': 'Active Instagram User',
-            'age': 22, 'gender': 'Female', 'platform': 'Instagram',
-            'daily_usage': 180, 'posts': 3, 'likes': 45, 'comments': 8, 'messages': 25
-        },
-        {
-            'name': 'Professional LinkedIn User', 
-            'age': 35, 'gender': 'Male', 'platform': 'LinkedIn',
-            'daily_usage': 45, 'posts': 1, 'likes': 12, 'comments': 3, 'messages': 8
-        },
-        {
-            'name': 'Heavy Snapchat User',
-            'age': 19, 'gender': 'Female', 'platform': 'Snapchat', 
-            'daily_usage': 240, 'posts': 2, 'likes': 120, 'comments': 15, 'messages': 40
-        },
-        {
-            'name': 'Casual Facebook User',
-            'age': 45, 'gender': 'Male', 'platform': 'Facebook',
-            'daily_usage': 60, 'posts': 1, 'likes': 8, 'comments': 2, 'messages': 12
-        }
-    ]
+    # Generate 5 random users for demonstration
+    num_demo_users = 5
     
-    for user in sample_users:
+    for i in range(num_demo_users):
+        user = generate_random_user()
+        
         emotion, confidence = predict_user_emotion(
-            user['age'], user['gender'], user['platform'], user['daily_usage'],
+            user['age'], user['gender'], user['prediction_platform'], user['daily_usage'],
             user['posts'], user['likes'], user['comments'], user['messages']
         )
         
-        print(f"\n👤 {user['name']}:")
-        print(f"   Age: {user['age']}, Platform: {user['platform']}")
-        print(f"   Usage: {user['daily_usage']} min/day, {user['posts']} posts/day")
-        print(f"   📊 Predicted Emotion: {emotion} (Confidence: {confidence:.1f}%)")
+        print(f"\n👤 Random User #{i+1}: {user['name']}")
+        print(f"   📊 Profile: {user['age']}yr {user['gender']} on {user['display_platform']}")
+        print(f"   ⏱️  Usage: {user['daily_usage']} min/day, {user['posts']} posts/day")
+        print(f"   � Engagement: {user['likes']} likes, {user['comments']} comments, {user['messages']} messages")
+        
+        # Add interpretation based on confidence
+        if "Error" not in str(emotion):
+            confidence_emoji = "🎯" if confidence >= 80 else "📈" if confidence >= 60 else "⚖️" if confidence >= 40 else "❓"
+            print(f"   {confidence_emoji} Predicted Emotion: {emotion} (Confidence: {confidence:.1f}%)")
+            
+            # Add behavioral insight
+            if user['display_platform'] in ['Instagram', 'TikTok'] and user['daily_usage'] > 200:
+                print(f"   💡 High usage pattern - heavy social media engagement")
+            elif user['display_platform'] == 'LinkedIn' and user['daily_usage'] < 60:
+                print(f"   💼 Professional usage pattern - focused networking")
+            elif user['messages'] > 100:
+                print(f"   💬 Communication-heavy user - high messaging activity")
+        else:
+            print(f"   ❌ Prediction Error: {emotion}")
 
-# Run demonstration
+def generate_custom_user_scenarios():
+    """Generate specific scenario-based users for testing"""
+    scenarios = [
+        {
+            'name': 'Heavy Social Media Addict',
+            'generator': lambda: {
+                **generate_random_user(),
+                'daily_usage': random.randint(300, 480),
+                'posts': random.randint(5, 15),
+                'likes': random.randint(100, 300)
+            }
+        },
+        {
+            'name': 'Minimal Digital Presence',
+            'generator': lambda: {
+                **generate_random_user(),
+                'daily_usage': random.randint(5, 30),
+                'posts': random.randint(0, 1),
+                'likes': random.randint(0, 10)
+            }
+        },
+        {
+            'name': 'Highly Engaged Creator',
+            'generator': lambda: {
+                **generate_random_user(),
+                'posts': random.randint(8, 20),
+                'likes': random.randint(200, 1000),
+                'comments': random.randint(30, 100)
+            }
+        }
+    ]
+    
+    print(f"\n🎯 Special Scenario Testing:")
+    print(f"="*40)
+    
+    for scenario in scenarios[:2]:  # Test 2 scenarios
+        user = scenario['generator']()
+        user['name'] = f"{scenario['name']} ({user.get('display_platform', user.get('platform', 'Unknown'))})"
+        
+        emotion, confidence = predict_user_emotion(
+            user['age'], user['gender'], user.get('prediction_platform', user.get('prediction_platform', 'Instagram')), 
+            user['daily_usage'], user['posts'], user['likes'], 
+            user['comments'], user['messages']
+        )
+        
+        print(f"\n📍 {user['name']}")
+        print(f"   📊 Extreme Pattern: {user['daily_usage']}min, {user['posts']}posts, {user['likes']}likes")
+        print(f"   🎪 Result: {emotion} ({confidence:.1f}% confidence)")
+
+# Run dynamic demonstration
+print(f"\n🎲 Generating Random Users for Each Run...")
 demo_predictions()
+
+# Run scenario testing
+generate_custom_user_scenarios()
 
 print(f"\n�🎉 Social Platform Emotion Prediction Complete!")
 print(f"Your AI model successfully predicts emotions from social media behavior!")

@@ -21,6 +21,29 @@ print("\n" + "="*60)
 print("📱 UNKNOWN USER EMOTION PREDICTION EXAMPLES")
 print("="*60)
 
+# Dynamic Examples Section
+print("\n🎲 DYNAMIC RANDOM USER EXAMPLES")
+print("-" * 50)
+print("⚡ These users are randomly generated each time you run this script!")
+
+for i in range(3):
+    print(f"\n🎯 Dynamic Example #{i+1}:")
+    user = generate_random_user()
+    
+    emotion, confidence = predict_user_emotion(
+        user['age'], user['gender'], user['prediction_platform'],
+        user['daily_usage'], user['posts'], user['likes'], 
+        user['comments'], user['messages']
+    )
+    
+    print(f"Profile: {user['age']}yr {user['gender']} {user['name']}")
+    print(f"Usage: {user['daily_usage']}min/day, {user['posts']} posts, {user['likes']} likes, {user['messages']} messages")
+    print(f"Prediction: {emotion} (Confidence: {confidence:.1f}%)")
+
+# Static Examples Section (for comparison)
+print("\n📊 STATIC REFERENCE EXAMPLES")
+print("-" * 50)
+
 # Example 1: Predict for a new Instagram influencer
 print("\n📸 Example 1: Instagram Influencer")
 print("-" * 30)
