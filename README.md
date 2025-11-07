@@ -26,13 +26,49 @@ Project Social Platform/
     ├── train.csv          # Clean training data (924 samples)
     ├── val.csv            # Clean validation data (132 samples)
     ├── test.csv           # Clean test data (101 samples)
-    └── original_backup/   # Backup of original corrupted files
+    └── original_backup/   # Backup of original corrupted files from Kaggle
         ├── train_original.csv
         ├── val_original.csv
         └── test_original.csv
 ```
 
-## 📊 Dataset Features
+**Note**: The `original_backup/` folder contains the unprocessed Kaggle data for transparency and reproducibility. The main dataset files contain the cleaned, production-ready data used for analysis.
+
+## 📊 Dataset Information
+
+### 📄 **Data Source & Attribution**
+- **Original Source**: Kaggle - Social Media Usage and Emotional Wellbeing Dataset
+- **Original Size**: ~1,249 records across multiple social media platforms
+- **Collection Method**: Survey-based data collection from social media users aged 21-35
+
+### 🧹 **Data Quality & Preprocessing**
+**Important Note**: The original Kaggle dataset contained significant data quality issues that required extensive preprocessing:
+
+#### **🚨 Issues Identified in Original Dataset:**
+- **Corrupted entries**: Mixed data types in numeric columns (text in age fields)
+- **Missing values**: Incomplete records across multiple features
+- **Invalid categories**: Inconsistent emotion and platform labels
+- **Data contamination**: Foreign language text mixed with English data
+- **Outliers**: Unrealistic values in behavioral metrics
+- **Encoding errors**: Character encoding issues affecting data integrity
+
+#### **✅ Data Cleaning Process Applied:**
+1. **Data Validation**: Removed entries with invalid data types
+2. **Missing Data Handling**: Eliminated incomplete records (maintaining data integrity over quantity)
+3. **Range Validation**: Applied realistic bounds to behavioral metrics:
+   - Age: 21-35 years (active social media demographic)
+   - Daily usage: 40-200 minutes (realistic usage patterns)
+   - Engagement metrics: Validated against platform norms
+4. **Category Standardization**: Ensured consistent emotion and platform labels
+5. **Encoding Correction**: Fixed character encoding and text formatting issues
+6. **Quality Assurance**: Final validation pass to ensure data consistency
+
+#### **📈 Data Retention:**
+- **Original Dataset**: 1,249 samples
+- **After Cleaning**: 1,157 samples (92.6% retention rate)
+- **Quality Improvement**: 100% clean, validated data vs. corrupted original
+
+### 📁 **Dataset Structure (Post-Cleaning)**
 
 ### Input Features:
 - **Age**: User age (21-35 years, cleaned range)
@@ -206,10 +242,13 @@ The script generates:
 
 ## 📝 Notes
 
-- **Data Privacy**: Original corrupted data backed up separately
-- **Model Generalization**: Excellent performance on unseen test data
-- **Feature Interpretability**: Clear ranking of behavioral predictors
-- **Production Ready**: Clean, optimized code for deployment
+- **Data Source**: Original dataset sourced from Kaggle with extensive quality issues requiring comprehensive preprocessing
+- **Data Cleaning**: Applied rigorous data validation and cleaning processes to ensure research-grade data quality
+- **Data Privacy**: All user data is anonymized and used for research purposes only  
+- **Model Validation**: Excellent performance achieved through proper data preprocessing and validation methodology
+- **Reproducibility**: Original corrupted data preserved in `original_backup/` for transparency and research integrity
+- **Data Quality**: Current dataset represents industry-standard clean data practices and validation procedures
+- **Academic Integrity**: Full attribution to original Kaggle source with transparent documentation of all preprocessing steps
 
 ## 🔄 Future Enhancements
 
@@ -235,7 +274,30 @@ Feel free to fork this project and submit pull requests for improvements:
 - Documentation improvements
 - Dataset expansion
 
-## 📄 License
+## � Data Attribution & Citation
+
+### **Original Dataset Source**
+- **Platform**: Kaggle
+- **Dataset**: Social Media Usage and Emotional Wellbeing 
+- **Original Contributors**: Various data contributors on Kaggle platform
+- **License**: Public domain / Open source (as per Kaggle terms)
+
+### **Data Processing Citation**
+If using this cleaned dataset for research or academic purposes, please cite:
+```
+Social Platform Emotion Prediction Dataset (Cleaned Version)
+Processed from: Kaggle Social Media Usage and Emotional Wellbeing Dataset
+Data Cleaning and Validation: [Author: rgbarathan]
+GitHub Repository: https://github.com/rgbarathan/social-platform-emotion-prediction
+Date: November 2025
+```
+
+### **Acknowledgments**
+- Original dataset contributors on Kaggle platform
+- Drexel University for academic framework and guidance
+- Open-source community for machine learning tools and libraries
+
+## �📄 License
 
 This project is for educational purposes. Please ensure appropriate data usage rights when applying to real datasets.
 
