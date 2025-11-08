@@ -2,7 +2,7 @@
 
 **Assignment:** Building a Demo of a Supervised Learning System  
 **Student:** [Your Name]  
-**Date:** November 7, 2025  
+**Date:** November 8, 2025  
 **Course:** [Course Name]  
 
 ---
@@ -129,7 +129,7 @@ This is a supervised learning classification problem where:
 
 **Source Libraries:**
 - **Primary:** scikit-learn (sklearn.ensemble.RandomForestClassifier)
-- **Supporting:** pandas, numpy, plotly, seaborn, matplotlib
+- **Supporting:** pandas, numpy, plotly
 - **Optional:** xgboost, lightgbm (for extended comparison)
 
 **Code Repository Information:**
@@ -211,8 +211,9 @@ StratifiedKFold(n_splits=5, shuffle=True, random_state=42)
 
 **Performance Metrics for Multi-class Classification:**
 
-**Primary Performance Results:**
+**Primary Performance Results (latest run):**
 - **Accuracy:** 98.02% (99 correct predictions out of 101 test samples)
+- **Balanced Accuracy:** 98.20%
 - **Precision (weighted):** 98.03% (class-weighted average)
 - **Recall (weighted):** 98.02% (class-weighted average) 
 - **F1-Score (weighted):** 98.03% (harmonic mean of precision/recall)
@@ -225,19 +226,19 @@ StratifiedKFold(n_splits=5, shuffle=True, random_state=42)
 
 **Detailed Per-Class Performance:**
 
-| Emotion    | Precision | Recall | F1-Score | Support |
-|------------|-----------|--------|----------|---------|
-| Aggression | 1.00      | 1.00   | 1.00     | 9       |
-| Anger      | 1.00      | 0.95   | 0.98     | 22      |
-| Anxiety    | 1.00      | 0.94   | 0.97     | 16      |
-| Boredom    | 0.93      | 1.00   | 0.96     | 13      |
-| Happiness  | 1.00      | 1.00   | 1.00     | 27      |
-| Neutral    | 0.93      | 1.00   | 0.97     | 14      |
+| Emotion (ID) | Precision | Recall | F1-Score | Support |
+|--------------|-----------|--------|----------|---------|
+| 1            | 1.00      | 1.00   | 1.00     | 9       |
+| 2            | 1.00      | 0.96   | 0.98     | 22      |
+| 3            | 1.00      | 0.94   | 0.97     | 16      |
+| 4            | 0.93      | 1.00   | 0.96     | 13      |
+| 5            | 1.00      | 1.00   | 1.00     | 27      |
+| 6            | 0.93      | 1.00   | 0.97     | 14      |
 
 **Macro Average:** 0.98 precision, 0.98 recall, 0.98 f1-score  
 **Weighted Average:** 0.98 precision, 0.98 recall, 0.98 f1-score
 
-**Algorithm Comparison Results:**
+**Algorithm Comparison Results (example):**
 
 | Algorithm           | Accuracy | F1-Score | ROC-AUC | Training Time |
 |--------------------|----------|----------|---------|---------------|
@@ -246,7 +247,7 @@ StratifiedKFold(n_splits=5, shuffle=True, random_state=42)
 | Support Vector Machine | 96.04% | 95.98%   | 99.12%  | 0.08s        |
 | Logistic Regression | 95.05%  | 94.89%   | 98.87%  | 0.03s        |
 
-**Feature Importance Analysis:**
+**Feature Importance Analysis (example RF run):**
 
 1. **Daily_Usage_Time_minutes:** 18.27% (strongest predictor)
 2. **Likes_Received_Per_Day:** 17.06% (social validation indicator)
@@ -309,6 +310,6 @@ The demo effectively showcases the complete machine learning pipeline from data 
 
 ---
 
-**Report Generated:** November 7, 2025  
+**Report Generated:** November 8, 2025  
 **System Status:** Production Ready  
 **Code Repository:** github.com/rgbarathan/social-platform-emotion-prediction

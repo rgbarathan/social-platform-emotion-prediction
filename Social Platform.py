@@ -3,7 +3,7 @@ import numpy as np
 from sklearn.ensemble import RandomForestClassifier, GradientBoostingClassifier
 from sklearn.linear_model import LogisticRegression
 from sklearn.svm import SVC
-from sklearn.metrics import classification_report, roc_auc_score, accuracy_score, precision_score, recall_score, f1_score
+from sklearn.metrics import classification_report, roc_auc_score, accuracy_score, precision_score, recall_score, f1_score, balanced_accuracy_score, confusion_matrix
 from sklearn.model_selection import cross_val_score, StratifiedKFold
 from sklearn.preprocessing import LabelEncoder, StandardScaler
 import plotly.express as px
@@ -283,6 +283,7 @@ def display_performance_results(y_test, y_pred, y_proba, model_name):
     
     # Calculate key metrics
     accuracy = accuracy_score(y_test, y_pred)
+    bal_accuracy = balanced_accuracy_score(y_test, y_pred)
     
     print(f"\n╔═══════════════════════════════════════════════════════════════════════╗")
     print(f"║                          🎯 MODEL PERFORMANCE SUMMARY                 ║")
@@ -321,8 +322,25 @@ def display_performance_results(y_test, y_pred, y_proba, model_name):
     except ValueError as e:
         print(f"│  ❌ ROC-AUC:      Error calculating ({str(e)[:30]})           │")
     
+    print(f"│  ⚖️ Balanced Acc.: {bal_accuracy:.4f} ({bal_accuracy*100:.2f}%)              │")
     print(f"└─────────────────────────────────────────────────────────────────────┘")
     
+    # Confusion Matrix
+    try:
+        cm = confusion_matrix(y_test, y_pred)
+        labels = sorted(list(set(y_test)))
+        print(f"\n┌─────────────────────────────────────────────────────────────────────┐")
+        print(f"│                          🧩 CONFUSION MATRIX                        │")
+        print(f"└─────────────────────────────────────────────────────────────────────┘")
+        # Header row
+        header = "      " + " ".join([f"{str(l):>6}" for l in labels])
+        print(header)
+        for i, l in enumerate(labels):
+            row = " ".join([f"{v:>6}" for v in cm[i]])
+            print(f"{str(l):>5} {row}")
+    except Exception as e:
+        print(f"⚠️ Confusion matrix unavailable: {e}")
+
     # Detailed Classification Report
     print(f"\n┌─────────────────────────────────────────────────────────────────────┐")
     print(f"│                     📋 DETAILED CLASSIFICATION REPORT               │")
@@ -706,7 +724,8 @@ def generate_model_comparison_webpage(results_df, cv_df=None):
 
 
 def generate_results_webpage(results_df, best_model_name, best_accuracy, feature_importance_data, 
-                           classification_report_data, demo_predictions=None):
+                           classification_report_data, demo_predictions=None,
+                           confusion_matrix_data=None, cm_labels=None, balanced_accuracy=None):
     """Generate a comprehensive HTML webpage showcasing all results"""
     
     def generate_demo_prediction_cards(demo_predictions):
@@ -1116,6 +1135,32 @@ def generate_results_webpage(results_df, best_model_name, best_accuracy, feature
         
         return chart_js
 
+    def generate_confusion_matrix_html(cm, labels):
+        """Render confusion matrix as an HTML table"""
+        if cm is None or labels is None:
+            return "<p style='color:#666;'>Confusion matrix unavailable.</p>"
+        # Header
+        header_cells = ''.join([f"<th style='text-align:center'>{str(l)}</th>" for l in labels])
+        # Rows
+        body_rows = []
+        for i, l in enumerate(labels):
+            row_vals = ''.join([f"<td style='text-align:center'>{int(v)}</td>" for v in cm[i]])
+            body_rows.append(f"<tr><th style='text-align:right;padding-right:8px'>{str(l)}</th>{row_vals}</tr>")
+        body_html = '\n'.join(body_rows)
+        return f"""
+        <table class="stats-table">
+            <thead>
+                <tr>
+                    <th></th>
+                    {header_cells}
+                </tr>
+            </thead>
+            <tbody>
+                {body_html}
+            </tbody>
+        </table>
+        """
+
     # Create the complete HTML content
     html_content = f"""
 <!DOCTYPE html>
@@ -1413,6 +1458,7 @@ def generate_results_webpage(results_df, best_model_name, best_accuracy, feature
                     <h3>🏆 Best Model Performance</h3>
                     <h2 style="color: #2ecc71; margin: 10px 0;">{best_accuracy:.2%}</h2>
                     <p><strong>Model:</strong> {best_model_name}</p>
+                    {f"<p><strong>Balanced Accuracy:</strong> {balanced_accuracy:.2%}</p>" if balanced_accuracy is not None else ''}
                     <div class="performance-badge excellent">🎯 Outstanding Performance</div>
                 </div>
                 <div class="metric-card">
@@ -1471,6 +1517,15 @@ def generate_results_webpage(results_df, best_model_name, best_accuracy, feature
                         {generate_classification_report_table(classification_report_data)}
                     </tbody>
                 </table>
+            </div>
+
+            <!-- Confusion Matrix -->
+            <div class="chart-container">
+                <h3>🧩 Confusion Matrix</h3>
+                <p style="color: #666; margin-bottom: 15px;">
+                    Rows are true classes; columns are predicted classes.
+                </p>
+                {generate_confusion_matrix_html(confusion_matrix_data, cm_labels)}
             </div>
             
             <!-- Feature Importance Ranking Table -->
@@ -1697,13 +1752,33 @@ try:
     
     # Generate and open the comprehensive results webpage
     print(f"\n🌐 Generating comprehensive results dashboard...")
+    # Prepare confusion matrix and balanced accuracy for HTML
+    from sklearn.metrics import confusion_matrix, balanced_accuracy_score
+    try:
+        cm_labels = sorted(list(classification_report_dict.keys()))
+        # Remove summary keys if present
+        cm_labels = [l for l in cm_labels if l not in ['accuracy','macro avg','weighted avg']]
+        # Use decoded test labels already prepared
+        cm_matrix = confusion_matrix(y_test_decoded, y_pred_decoded, labels=cm_labels)
+    except Exception:
+        cm_matrix = None
+        cm_labels = None
+    try:
+        # Need encoded predictions for balanced accuracy (works with decoded too if labels match)
+        balanced_acc = balanced_accuracy_score(y_test, clf.predict(X_test))
+    except Exception:
+        balanced_acc = None
+
     webpage_file = generate_results_webpage(
         results_df=results_df,
         best_model_name=best_model_name,
         best_accuracy=best_accuracy,
         feature_importance_data=feature_importance_dict,
         classification_report_data=classification_report_dict,
-        demo_predictions=demo_predictions
+        demo_predictions=demo_predictions,
+        confusion_matrix_data=cm_matrix,
+        cm_labels=cm_labels,
+        balanced_accuracy=balanced_acc
     )
     
     if webpage_file:
