@@ -958,7 +958,9 @@ def generate_results_webpage(results_df, best_model_name, best_accuracy, feature
                     paper_bgcolor: 'rgba(0,0,0,0)'
                 }};
                 
-                Plotly.newPlot('model-comparison-chart', modelData, modelLayout);
+                if (document.getElementById('model-comparison-chart')) {{
+                    Plotly.newPlot('model-comparison-chart', modelData, modelLayout);
+                }}
             """
         else:
             chart_js += """
@@ -980,85 +982,14 @@ def generate_results_webpage(results_df, best_model_name, best_accuracy, feature
                     showlegend: false
                 };
                 
-                Plotly.newPlot('model-comparison-chart', singleModelData, singleModelLayout);
+                if (document.getElementById('model-comparison-chart')) {{
+                    Plotly.newPlot('model-comparison-chart', singleModelData, singleModelLayout);
+                }}
             """
         
-        # Feature Importance Chart
-        if feature_importance_data:
-            features = list(feature_importance_data.keys())
-            importance = list(feature_importance_data.values())
-            
-            chart_js += f"""
-                // Feature Importance Chart
-                var featureData = [{{
-                    x: {importance},
-                    y: {features},
-                    type: 'bar',
-                    orientation: 'h',
-                    marker: {{
-                        color: 'rgba(75, 192, 192, 0.8)',
-                        line: {{ color: 'rgba(75, 192, 192, 1.0)', width: 2 }}
-                    }}
-                }}];
-                
-                var featureLayout = {{
-                    title: 'Feature Importance Rankings',
-                    xaxis: {{ title: 'Importance Score' }},
-                    yaxis: {{ title: 'Features' }},
-                    font: {{ family: 'Segoe UI, sans-serif' }},
-                    plot_bgcolor: 'rgba(0,0,0,0)',
-                    paper_bgcolor: 'rgba(0,0,0,0)'
-                }};
-                
-                Plotly.newPlot('feature-importance-chart', featureData, featureLayout);
-            """
+        # (Removed Feature Importance Chart generation per user request)
         
-        # Classification Performance Chart
-        if classification_report_data:
-            emotions = [key for key in classification_report_data.keys() 
-                       if key not in ['accuracy', 'macro avg', 'weighted avg']]
-            precision = [classification_report_data[emotion].get('precision', 0) for emotion in emotions]
-            recall = [classification_report_data[emotion].get('recall', 0) for emotion in emotions]
-            f1_score = [classification_report_data[emotion].get('f1-score', 0) for emotion in emotions]
-            
-            chart_js += f"""
-                // Classification Performance Chart
-                var classificationData = [
-                    {{
-                        x: {emotions},
-                        y: {precision},
-                        type: 'bar',
-                        name: 'Precision',
-                        marker: {{ color: 'rgba(255, 205, 86, 0.8)' }}
-                    }},
-                    {{
-                        x: {emotions},
-                        y: {recall},
-                        type: 'bar',
-                        name: 'Recall',
-                        marker: {{ color: 'rgba(54, 162, 235, 0.8)' }}
-                    }},
-                    {{
-                        x: {emotions},
-                        y: {f1_score},
-                        type: 'bar',
-                        name: 'F1-Score',
-                        marker: {{ color: 'rgba(255, 99, 132, 0.8)' }}
-                    }}
-                ];
-                
-                var classificationLayout = {{
-                    title: 'Performance by Emotion Category',
-                    xaxis: {{ title: 'Emotion Categories' }},
-                    yaxis: {{ title: 'Score', range: [0, 1] }},
-                    barmode: 'group',
-                    font: {{ family: 'Segoe UI, sans-serif' }},
-                    plot_bgcolor: 'rgba(0,0,0,0)',
-                    paper_bgcolor: 'rgba(0,0,0,0)'
-                }};
-                
-                Plotly.newPlot('classification-performance-chart', classificationData, classificationLayout);
-            """
+        # (Removed Classification Performance Chart generation per user request)
         
         return chart_js
 
@@ -1377,15 +1308,9 @@ def generate_results_webpage(results_df, best_model_name, best_accuracy, feature
                 </div>
             </div>
             
-            <div class="chart-container">
-                <h3> Feature Importance Analysis</h3>
-                <div id="feature-importance-chart"></div>
-            </div>
+            <!-- Removed: Feature Importance Analysis chart section -->
             
-            <div class="chart-container">
-                <h3>🎭 Emotion Classification Performance</h3>
-                <div id="classification-performance-chart"></div>
-            </div>
+            <!-- Removed: Emotion Classification Performance chart section -->
             
             <div class="chart-container">
                 <h3>� Model Performance</h3>
