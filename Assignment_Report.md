@@ -20,9 +20,9 @@ This report presents a comprehensive supervised learning demo for predicting use
 **Social media platforms, digital marketing agencies, mental health organizations, and customer service companies would benefit from this application.**
 
 **Financial value:**
-- Social media platforms could improve user engagement by 15-20% through emotion-aware content personalization
-- Marketing agencies could increase campaign effectiveness by targeting users based on predicted emotional states
-- Customer service companies could reduce response time by automatically routing users to appropriate support teams
+- Reduce manual analysis and moderation costs via automation
+- Improve campaign performance and retention with emotion-aware targeting
+- Shorten response times by routing high-risk/negative-emotion cases to the right teams
 
 **Process improvement:**
 - Automation of manual emotion analysis that currently requires human reviewers
@@ -45,7 +45,7 @@ This report presents a comprehensive supervised learning demo for predicting use
 
 **Data characteristics:**
 - **Total instances:** 1,157 labeled samples
-- **Emotion categories:** 7 classes (Happiness, Neutral, Anxiety, Sadness, Boredom, Anger, Aggression)
+- **Emotion categories:** 7 classes overall (Happiness, Neutral, Anxiety, Sadness, Boredom, Anger, Aggression)
 - **Features:** 8 behavioral and demographic variables
   - Age (numeric)
   - Gender (categorical: Male, Female)
@@ -61,13 +61,12 @@ This report presents a comprehensive supervised learning demo for predicting use
 - Validation set: 132 samples (11.4%)
 - Test set: 101 samples (8.7%)
 
-**Class balance:**
-- Happiness: 186 instances (20.1%)
-- Neutral: 184 instances (19.9%)
-- Anxiety: 156 instances (16.9%)
-- Sadness: 146 instances (15.8%)
-- Boredom: 130 instances (14.1%)
-- Anger: 122 instances (13.2%)
+Note: The label “Aggression” appears in the validation split (n=1) but not in the training or test splits. The model and test metrics therefore cover six classes in evaluation.
+
+**Class distribution by split (counts):**
+- Train (924 total): Happiness 186, Neutral 184, Anxiety 156, Sadness 146, Boredom 130, Anger 122
+- Val (132 total): Neutral 27, Happiness 26, Anxiety 29, Sadness 24, Boredom 16, Anger 9, Aggression 1
+- Test (101 total): Neutral 27, Anxiety 22, Boredom 16, Sadness 14, Happiness 13, Anger 9
 
 **Data acquisition method:**
 - Generated realistic user behavioral patterns based on platform-specific usage studies
@@ -145,9 +144,10 @@ This is a supervised learning classification problem where:
 git clone https://github.com/rgbarathan/social-platform-emotion-prediction.git
 
 # Step 2: Navigate to project directory
-cd "Project Social Platform"
+cd social-platform-emotion-prediction
 
-# Step 3: Activate virtual environment
+# Step 3: (Optional) Create and activate a virtual environment (macOS / zsh)
+python3 -m venv .venv
 source .venv/bin/activate
 
 # Step 4: Install dependencies
@@ -220,20 +220,18 @@ StratifiedKFold(n_splits=5, shuffle=True, random_state=42)
 - **ROC-AUC:** 99.82% (multi-class one-vs-rest)
 
 **Cross-Validation Stability:**
-- **5-fold CV Score:** 98.73% ± 0.24%
-- **Standard deviation:** 0.24% (indicates highly stable performance)
-- **CV Range:** 98.49% - 98.97% (consistent across all folds)
+- 5-fold stratified cross-validation shows consistent performance across folds (see dashboard for summary)
 
-**Detailed Per-Class Performance:**
+**Detailed Per-Class Performance (test set):**
 
-| Emotion (ID) | Precision | Recall | F1-Score | Support |
-|--------------|-----------|--------|----------|---------|
-| 1            | 1.00      | 1.00   | 1.00     | 9       |
-| 2            | 1.00      | 0.96   | 0.98     | 22      |
-| 3            | 1.00      | 0.94   | 0.97     | 16      |
-| 4            | 0.93      | 1.00   | 0.96     | 13      |
-| 5            | 1.00      | 1.00   | 1.00     | 27      |
-| 6            | 0.93      | 1.00   | 0.97     | 14      |
+| Emotion  | Precision | Recall | F1-Score | Support |
+|----------|-----------|--------|----------|---------|
+| Anger    | 1.00      | 1.00   | 1.00     | 9       |
+| Anxiety  | 1.00      | 0.96   | 0.98     | 22      |
+| Boredom  | 1.00      | 0.94   | 0.97     | 16      |
+| Happiness| 0.93      | 1.00   | 0.96     | 13      |
+| Neutral  | 1.00      | 1.00   | 1.00     | 27      |
+| Sadness  | 0.93      | 1.00   | 0.97     | 14      |
 
 **Macro Average:** 0.98 precision, 0.98 recall, 0.98 f1-score  
 **Weighted Average:** 0.98 precision, 0.98 recall, 0.98 f1-score
