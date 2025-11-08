@@ -91,7 +91,7 @@ Project Social Platform/
 
 ### Target Variable:
 - **Dominant_Emotion**: 7 categories
-  - Agression
+  - Aggression
   - Anger
   - Anxiety
   - Boredom
@@ -273,7 +273,7 @@ python dynamic_demo.py         # Dynamic showcase (now integrated)
 
 | Emotion    | Precision | Recall | F1-Score | Support |
 |------------|-----------|---------|----------|---------|
-| Agression  | 100%      | 100%    | 100%     | 9       |
+| Aggression | 100%      | 100%    | 100%     | 9       |
 | Anger      | 100%      | 95%     | 98%      | 22      |
 | Anxiety    | 100%      | 94%     | 97%      | 16      |
 | Boredom    | 93%       | 100%    | 96%      | 13      |
