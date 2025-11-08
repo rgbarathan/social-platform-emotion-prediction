@@ -4,7 +4,7 @@ A machine learning project that predicts user emotions based on social media pla
 
 ## 📋 Project Overview
 
-This project analyzes social media user behavior to predict dominant emotions using a Random Forest classifier. The model achieves **98% accuracy** and **99.8% ROC-AUC score** in classifying emotions from user engagement patterns.
+This project analyzes social media user behavior to predict dominant emotions using a Random Forest classifier. The model achieves **~98% accuracy** and **~99.8% ROC-AUC** on the held-out test set.
 
 ### 🎯 Key Features
 
@@ -17,7 +17,7 @@ This project analyzes social media user behavior to predict dominant emotions us
 - **Auto Model Selection**: Automatically selects best performer
 - **Unknown User Prediction**: Predict emotions for new users
 - **Clean Datasets**: Pre-processed, production-ready data
-- **Feature Analysis**: Interactive visualization of feature importance
+- **Feature Analysis**: Feature importance ranking table (HTML)
 - **Professional Pipeline**: Optimized code with error handling
 
 ## 🏗️ Project Structure
@@ -106,7 +106,7 @@ Project Social Platform/
 - Python 3.8 or higher
 - pip package manager
 
-### Installation
+### Installation (macOS / zsh)
 
 1. **Clone or download the project**
    ```bash
@@ -115,7 +115,7 @@ Project Social Platform/
 
 2. **Create a virtual environment** (recommended)
    ```bash
-   python -m venv .venv
+   python3 -m venv .venv
    source .venv/bin/activate  # On Windows: .venv\Scripts\activate
    ```
 
@@ -150,7 +150,7 @@ The main script now includes a comprehensive interactive menu:
 
 ### 🔬 **Advanced Model Comparison Suite**
 
-**NEW FEATURE**: Comprehensive algorithm comparison and automatic best model selection!
+**NEW FEATURE**: Comprehensive algorithm comparison and automatic best model selection.
 
 #### **What's Included**
 - **4+ Machine Learning Algorithms**: Random Forest, Gradient Boosting, SVM, Logistic Regression
@@ -322,14 +322,13 @@ python dynamic_demo.py         # Dynamic showcase (now integrated)
    - Interactive model comparison charts
    - Performance ranking and statistical significance
 
-### Enhanced Libraries Used:
+### Libraries Used:
 - **pandas**: Data manipulation and analysis
 - **scikit-learn**: Machine learning algorithms and metrics
-- **xgboost**: Gradient boosting framework (optional)
-- **lightgbm**: Fast gradient boosting (optional)
 - **plotly**: Interactive data visualization
-- **seaborn**: Statistical data visualization
 - **numpy**: Numerical computations
+  
+Optional for extended comparison (install if needed): xgboost, lightgbm
 
 ## 📊 Output
 
@@ -347,7 +346,7 @@ The enhanced script now generates:
 7. **Encoding Information**: Categorical variable mappings
 8. **Performance Metrics**: Detailed classification report for best model
 9. **ROC-AUC Score**: Overall discrimination capability
-10. **Feature Importance Plot**: Interactive visualization for winner model
+10. **Feature Importance Rankings**: Tabular ranking for winner model
 11. **Top Features Ranking**: Most predictive behaviors
 12. **Emotion Label Mapping**: Class encoding reference
 
@@ -435,7 +434,7 @@ Feel free to fork this project and submit pull requests for improvements:
 - Documentation improvements
 - Dataset expansion
 
-## � Data Attribution & Citation
+## 📑 Data Attribution & Citation
 
 ### **Original Dataset Source**
 - **Platform**: Kaggle
@@ -460,7 +459,7 @@ Date: November 2025
 - Drexel University for academic framework and guidance
 - Open-source community for machine learning tools and libraries
 
-## �📄 License
+## 📄 License
 
 This project is for educational purposes. Please ensure appropriate data usage rights when applying to real datasets.
 
@@ -470,5 +469,5 @@ Created for Drexel University Assignment 3 - Social Platform Analysis
 
 ---
 
-*Last Updated: November 2, 2025*
+*Last Updated: November 8, 2025*
 *Final Version: Production-Ready AI System with Clean Datasets*

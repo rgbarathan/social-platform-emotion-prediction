@@ -1,7 +1,10 @@
 pandas>=1.5.0
+numpy>=1.24.0
 scikit-learn>=1.3.0
 plotly>=5.15.0
-numpy>=1.24.0
-xgboost>=2.0.0
-lightgbm>=4.0.0
-seaborn>=0.12.0
+
+# Optional models (install if you want extended comparison)
+# xgboost>=2.0.0
+# lightgbm>=4.0.0
+
+# Removed: seaborn (no longer used in code)
