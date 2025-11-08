@@ -1,0 +1,159 @@
+
+    <!DOCTYPE html>
+    <html lang='en'>
+    <head>
+        <meta charset='UTF-8'/>
+        <meta name='viewport' content='width=device-width, initial-scale=1.0'/>
+        <title>Model Comparison Dashboard</title>
+        <script src='https://cdn.plot.ly/plotly-latest.min.js'></script>
+        <style>
+            body {font-family: 'Segoe UI', Tahoma, sans-serif; margin:0; padding:25px; background:#f4f6fb;}
+            .container {max-width:1300px; margin:0 auto; background:#fff; padding:30px; border-radius:16px; box-shadow:0 8px 28px rgba(0,0,0,0.12);}
+            h1 {margin-top:0;}
+            .badge {padding:4px 10px; border-radius:14px; font-size:0.75rem; font-weight:600; display:inline-block;}
+            .excellent {background:#d4edda; color:#155724;}
+            .good {background:#fff3cd; color:#856404;}
+            .avg {background:#cfe2ff; color:#084298;}
+            .low {background:#f8d7da; color:#842029;}
+            .stats-table {width:100%; border-collapse:collapse; margin:20px 0;}
+            .stats-table th, .stats-table td {padding:10px 12px; text-align:left; border-bottom:1px solid #e1e5ec;}
+            .stats-table th {background:#2c3e50; color:#fff;}
+            .chart-container {background:#fff; padding:20px; margin:25px 0; border-radius:12px; box-shadow:0 4px 16px rgba(0,0,0,0.08);}
+            .highlight-box {background:linear-gradient(90deg,#667eea,#764ba2); color:#fff; padding:18px 22px; border-radius:12px; margin:20px 0;}
+            .footer {margin-top:40px; text-align:center; font-size:0.85em; color:#666;}
+        </style>
+    </head>
+    <body>
+        <div class='container'>
+            <h1>🔬 Model Comparison Dashboard</h1>
+            <div class='highlight-box'>
+                <strong>Top Model:</strong> Random Forest &nbsp; | &nbsp; Accuracy: 98.02%
+            </div>
+            <div class='chart-container'>
+                <h3>📊 Accuracy & F1-Score Comparison</h3>
+                <div id='accuracy-f1-chart'></div>
+            </div>
+            <div class='chart-container'>
+                <h3>🎯 Precision vs Recall Scatter</h3>
+                <div id='precision-recall-scatter'></div>
+            </div>
+            <div class='chart-container'>
+                <h3>🏆 Ranked Model Performance</h3>
+                <table class='stats-table'>
+                    <thead>
+                        <tr><th>Rank</th><th>Model</th><th>Accuracy</th><th>Precision</th><th>Recall</th><th>F1-Score</th><th>ROC-AUC</th><th>Status</th></tr>
+                    </thead>
+                    <tbody>
+                        
+        <tr>
+            <td>🥇</td>
+            <td>Random Forest</td>
+            <td>0.9802</td>
+            <td>0.9816</td>
+            <td>0.9802</td>
+            <td>0.9803</td>
+            <td>0.9982</td>
+            <td><span class="badge excellent">🏆 Outstanding</span></td>
+        </tr>
+        
+
+        <tr>
+            <td>🥈</td>
+            <td>Gradient Boosting</td>
+            <td>0.9703</td>
+            <td>0.9710</td>
+            <td>0.9703</td>
+            <td>0.9704</td>
+            <td>0.9926</td>
+            <td><span class="badge excellent">🏆 Outstanding</span></td>
+        </tr>
+        
+
+        <tr>
+            <td>🥉</td>
+            <td>Support Vector Machine</td>
+            <td>0.7426</td>
+            <td>0.7546</td>
+            <td>0.7426</td>
+            <td>0.7444</td>
+            <td>0.9508</td>
+            <td><span class="badge low">⚠️ Needs Work</span></td>
+        </tr>
+        
+
+        <tr>
+            <td>4</td>
+            <td>Logistic Regression</td>
+            <td>0.5347</td>
+            <td>0.5206</td>
+            <td>0.5347</td>
+            <td>0.5221</td>
+            <td>0.8623</td>
+            <td><span class="badge low">⚠️ Needs Work</span></td>
+        </tr>
+        
+                    </tbody>
+                </table>
+            </div>
+            
+        <div class='chart-container'>
+            <h3>🧪 Cross-Validation Summary</h3>
+            <table class='stats-table'>
+                <thead><tr><th>Model</th><th>Mean CV Score</th><th>Std Dev</th></tr></thead>
+                <tbody>
+            <tr>
+                <td>Random Forest</td>
+                <td>0.9873</td>
+                <td>0.0024</td>
+            </tr>
+            
+            <tr>
+                <td>Gradient Boosting</td>
+                <td>0.9834</td>
+                <td>0.0039</td>
+            </tr>
+            
+            <tr>
+                <td>Logistic Regression</td>
+                <td>0.5454</td>
+                <td>0.0084</td>
+            </tr>
+            
+            <tr>
+                <td>Support Vector Machine</td>
+                <td>0.7483</td>
+                <td>0.0162</td>
+            </tr>
+            </tbody>
+            </table>
+        </div>
+        
+            <div class='footer'>
+                Generated on November 08, 2025 at 01:03 PM • Social Platform Emotion Prediction System
+            </div>
+        </div>
+        <script>
+            
+    // Accuracy & F1 Comparison
+    var perfData = [
+        { x: ['Random Forest', 'Gradient Boosting', 'Logistic Regression', 'Support Vector Machine'], y: [0.9801980198019802, 0.9702970297029703, 0.5346534653465347, 0.7425742574257426], type: 'bar', name: 'Accuracy', marker: {color: 'rgba(54,162,235,0.7)'} },
+        { x: ['Random Forest', 'Gradient Boosting', 'Logistic Regression', 'Support Vector Machine'], y: [0.9802772570157828, 0.9703652535796216, 0.5221191161286772, 0.7444005353904034], type: 'bar', name: 'F1-Score', marker: {color: 'rgba(255,99,132,0.7)'} }
+    ];
+    Plotly.newPlot('accuracy-f1-chart', perfData, {
+        title: 'Accuracy vs F1-Score by Model', barmode: 'group',
+        yaxis: {range: [0,1]}, font: {family: 'Segoe UI'}
+    });
+
+    // Precision vs Recall Scatter
+    var prData = [{
+        x: [0.9815652993870815, 0.971004243281471, 0.5206220622062206, 0.7546354635463547], y: [0.9801980198019802, 0.9702970297029703, 0.5346534653465347, 0.7425742574257426], text: ['Random Forest', 'Gradient Boosting', 'Logistic Regression', 'Support Vector Machine'], mode: 'markers+text', textposition: 'top center',
+        marker: {size: 12, color: 'rgba(153,102,255,0.8)'}, name: 'Models'
+    }];
+    Plotly.newPlot('precision-recall-scatter', prData, {
+        title: 'Precision vs Recall', xaxis: {range:[0,1]}, yaxis: {range:[0,1]}, font: {family: 'Segoe UI'}
+    });
+    
+        </script>
+    </body>
+    </html>
+    

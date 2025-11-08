@@ -9,8 +9,7 @@ from sklearn.preprocessing import LabelEncoder, StandardScaler
 import plotly.express as px
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
-import seaborn as sns
-import matplotlib.pyplot as plt
+# Removed unused visualization libraries to reduce dependencies and lines
 import webbrowser
 import os
 from datetime import datetime
@@ -84,62 +83,7 @@ y_test = test_df['Dominant_Emotion']
 print(f"✅ Features prepared: {len(feature_columns)} features")
 
 # ========================================
-# 🚀 MODEL COMPARISON SUITE
-# ========================================
-
-def evaluate_model_performance(model, X_train, y_train, X_test, y_test, model_name):
-    """Comprehensive model evaluation with multiple metrics"""
-    try:
-        # Train the model
-        model.fit(X_train, y_train)
-        
-        # Make predictions
-        y_pred = model.predict(X_test)
-        y_proba = model.predict_proba(X_test) if hasattr(model, 'predict_proba') else None
-        
-        # Calculate metrics
-        accuracy = accuracy_score(y_test, y_pred)
-        precision = precision_score(y_test, y_pred, average='weighted')
-        recall = recall_score(y_test, y_pred, average='weighted')
-        f1 = f1_score(y_test, y_pred, average='weighted')
-        
-        # ROC-AUC (if probability predictions available)
-        roc_auc = None
-        if y_proba is not None:
-            try:
-                roc_auc = roc_auc_score(y_test, y_proba, multi_class='ovr')
-            except Exception:
-                roc_auc = None
-        
-        return {
-            'Model': model_name,
-            'Accuracy': accuracy,
-            'Precision': precision,
-            'Recall': recall,
-            'F1_Score': f1,
-            'ROC_AUC': roc_auc,
-            'Trained_Model': model
-        }
-    except Exception as e:
-        print(f"❌ Error evaluating {model_name}: {str(e)}")
-        return None
-
-def cross_validate_model(model, X, y, model_name, cv_folds=5):
-    """Perform cross-validation analysis"""
-    try:
-        cv_scores = cross_val_score(model, X, y, cv=StratifiedKFold(n_splits=cv_folds, shuffle=True, random_state=42), scoring='accuracy')
-        return {
-            'Model': model_name,
-            'CV_Mean': cv_scores.mean(),
-            'CV_Std': cv_scores.std(),
-            'CV_Scores': cv_scores
-        }
-    except Exception as e:
-        print(f"❌ Error in cross-validation for {model_name}: {str(e)}")
-        return None
-
-# ========================================
-# 🚀 OPTIMIZED MODEL SYSTEM
+# 🚀 MODEL COMPARISON SUITE (consolidated)
 # ========================================
 
 def evaluate_model_performance(model, X_train, y_train, X_test, y_test, model_name):
@@ -281,6 +225,12 @@ def run_full_model_comparison():
         print(f"\n⚠️  Switching to {best_model_name} (outperformed Random Forest)")
     else:
         print(f"\n✅ Random Forest confirmed as optimal choice!")
+
+    # Generate dedicated comparison dashboard now that results_df and cv_df are available
+    try:
+        generate_model_comparison_webpage(results_df, cv_df)
+    except Exception as e:
+        print(f"⚠️ Could not generate comparison dashboard automatically ({e}).")
 
     return results_df, cv_df
 
@@ -488,7 +438,7 @@ def display_model_comparison_results(results_df, best_model_name, best_accuracy)
     # Check if comparison data is available
     if results_df is not None and len(results_df) > 1:
         print(f"\n┌─────────────────────────────────────────────────────────────────────┐")
-        print(f"│                       � ALL MODELS COMPARISON                      │")
+        print(f"│                       📋 ALL MODELS COMPARISON                      │")
         print(f"└─────────────────────────────────────────────────────────────────────┘")
         
         print(f"\n{'Rank':<5} {'Model':<20} {'Accuracy':<12} {'F1-Score':<12} {'ROC-AUC':<10} {'Status':<15}")
@@ -511,7 +461,7 @@ def display_model_comparison_results(results_df, best_model_name, best_accuracy)
             elif row['Accuracy'] >= 0.75:
                 status = "👍 Good"
             else:
-                status = "� Needs Work"
+                status = "⚠️ Needs Work"
             
             print(f"{emoji:<5} {row['Model']:<20} {accuracy:<12} {f1_score:<12} {roc_auc:<10} {status:<15}")
         
@@ -522,6 +472,8 @@ def display_model_comparison_results(results_df, best_model_name, best_accuracy)
 
 # Display the comparison
 display_model_comparison_results(results_df, best_model_name, best_accuracy)
+
+# (Comparison dashboard will be generated after webpage section once all data is prepared)
 
 # Feature importance analysis
 def display_feature_importance(clf, X_train):
@@ -581,6 +533,177 @@ display_feature_importance(clf, X_train)
 # ========================================
 # 🌐 RESULTS WEBPAGE GENERATOR FUNCTION
 # ========================================
+
+# ========================================
+# 🌐 MODEL COMPARISON WEBPAGE GENERATOR
+# ========================================
+def generate_model_comparison_webpage(results_df, cv_df=None):
+    """Generate an HTML dashboard focused solely on model comparison.
+    Includes comparative metrics, ranking table, scatter (precision vs recall),
+    and cross-validation summary if available.
+    """
+    if results_df is None or len(results_df) == 0:
+        print("⚠️ No model comparison data available to generate webpage.")
+        return None
+
+    # Prepare ranked models
+    ranked = results_df.sort_values('Accuracy', ascending=False).reset_index(drop=True)
+    best_model = ranked.iloc[0]['Model']
+    best_acc = ranked.iloc[0]['Accuracy']
+
+    # Build rows for ranking table
+    table_rows = []
+    for idx, row in ranked.iterrows():
+        rank_icon = '🥇' if idx == 0 else '🥈' if idx == 1 else '🥉' if idx == 2 else str(idx+1)
+        acc = f"{row['Accuracy']:.4f}"; f1 = f"{row['F1_Score']:.4f}"; prec = f"{row['Precision']:.4f}"; rec = f"{row['Recall']:.4f}"; auc = f"{row['ROC_AUC']:.4f}" if row.get('ROC_AUC') else 'N/A'
+        if row['Accuracy'] >= 0.95:
+            status_badge = '<span class="badge excellent">🏆 Outstanding</span>'
+        elif row['Accuracy'] >= 0.85:
+            status_badge = '<span class="badge good">🎯 Excellent</span>'
+        elif row['Accuracy'] >= 0.75:
+            status_badge = '<span class="badge avg">👍 Solid</span>'
+        else:
+            status_badge = '<span class="badge low">⚠️ Needs Work</span>'
+        table_rows.append(f"""
+        <tr>
+            <td>{rank_icon}</td>
+            <td>{row['Model']}</td>
+            <td>{acc}</td>
+            <td>{prec}</td>
+            <td>{rec}</td>
+            <td>{f1}</td>
+            <td>{auc}</td>
+            <td>{status_badge}</td>
+        </tr>
+        """)
+    table_html = '\n'.join(table_rows)
+
+    # Cross-validation summary table
+    cv_section = ''
+    if cv_df is not None and len(cv_df) > 0:
+        cv_rows = []
+        for _, row in cv_df.iterrows():
+            cv_rows.append(f"""
+            <tr>
+                <td>{row['Model']}</td>
+                <td>{row['CV_Mean']:.4f}</td>
+                <td>{row['CV_Std']:.4f}</td>
+            </tr>
+            """)
+        cv_section = f"""
+        <div class='chart-container'>
+            <h3>🧪 Cross-Validation Summary</h3>
+            <table class='stats-table'>
+                <thead><tr><th>Model</th><th>Mean CV Score</th><th>Std Dev</th></tr></thead>
+                <tbody>{''.join(cv_rows)}</tbody>
+            </table>
+        </div>
+        """
+
+    # Build JS for comparison charts
+    models_js = results_df['Model'].tolist()
+    acc_js = results_df['Accuracy'].tolist()
+    f1_js = results_df['F1_Score'].tolist()
+    prec_js = results_df['Precision'].tolist()
+    rec_js = results_df['Recall'].tolist()
+
+    chart_js = f"""
+    // Accuracy & F1 Comparison
+    var perfData = [
+        {{ x: {models_js}, y: {acc_js}, type: 'bar', name: 'Accuracy', marker: {{color: 'rgba(54,162,235,0.7)'}} }},
+        {{ x: {models_js}, y: {f1_js}, type: 'bar', name: 'F1-Score', marker: {{color: 'rgba(255,99,132,0.7)'}} }}
+    ];
+    Plotly.newPlot('accuracy-f1-chart', perfData, {{
+        title: 'Accuracy vs F1-Score by Model', barmode: 'group',
+        yaxis: {{range: [0,1]}}, font: {{family: 'Segoe UI'}}
+    }});
+
+    // Precision vs Recall Scatter
+    var prData = [{{
+        x: {prec_js}, y: {rec_js}, text: {models_js}, mode: 'markers+text', textposition: 'top center',
+        marker: {{size: 12, color: 'rgba(153,102,255,0.8)'}}, name: 'Models'
+    }}];
+    Plotly.newPlot('precision-recall-scatter', prData, {{
+        title: 'Precision vs Recall', xaxis: {{range:[0,1]}}, yaxis: {{range:[0,1]}}, font: {{family: 'Segoe UI'}}
+    }});
+    """
+
+    # Timestamp for footer
+    timestamp = datetime.now().strftime('%B %d, %Y at %I:%M %p')
+
+    html = f"""
+    <!DOCTYPE html>
+    <html lang='en'>
+    <head>
+        <meta charset='UTF-8'/>
+        <meta name='viewport' content='width=device-width, initial-scale=1.0'/>
+        <title>Model Comparison Dashboard</title>
+        <script src='https://cdn.plot.ly/plotly-latest.min.js'></script>
+        <style>
+            body {{font-family: 'Segoe UI', Tahoma, sans-serif; margin:0; padding:25px; background:#f4f6fb;}}
+            .container {{max-width:1300px; margin:0 auto; background:#fff; padding:30px; border-radius:16px; box-shadow:0 8px 28px rgba(0,0,0,0.12);}}
+            h1 {{margin-top:0;}}
+            .badge {{padding:4px 10px; border-radius:14px; font-size:0.75rem; font-weight:600; display:inline-block;}}
+            .excellent {{background:#d4edda; color:#155724;}}
+            .good {{background:#fff3cd; color:#856404;}}
+            .avg {{background:#cfe2ff; color:#084298;}}
+            .low {{background:#f8d7da; color:#842029;}}
+            .stats-table {{width:100%; border-collapse:collapse; margin:20px 0;}}
+            .stats-table th, .stats-table td {{padding:10px 12px; text-align:left; border-bottom:1px solid #e1e5ec;}}
+            .stats-table th {{background:#2c3e50; color:#fff;}}
+            .chart-container {{background:#fff; padding:20px; margin:25px 0; border-radius:12px; box-shadow:0 4px 16px rgba(0,0,0,0.08);}}
+            .highlight-box {{background:linear-gradient(90deg,#667eea,#764ba2); color:#fff; padding:18px 22px; border-radius:12px; margin:20px 0;}}
+            .footer {{margin-top:40px; text-align:center; font-size:0.85em; color:#666;}}
+        </style>
+    </head>
+    <body>
+        <div class='container'>
+            <h1>🔬 Model Comparison Dashboard</h1>
+            <div class='highlight-box'>
+                <strong>Top Model:</strong> {best_model} &nbsp; | &nbsp; Accuracy: {best_acc:.2%}
+            </div>
+            <div class='chart-container'>
+                <h3>📊 Accuracy & F1-Score Comparison</h3>
+                <div id='accuracy-f1-chart'></div>
+            </div>
+            <div class='chart-container'>
+                <h3>🎯 Precision vs Recall Scatter</h3>
+                <div id='precision-recall-scatter'></div>
+            </div>
+            <div class='chart-container'>
+                <h3>🏆 Ranked Model Performance</h3>
+                <table class='stats-table'>
+                    <thead>
+                        <tr><th>Rank</th><th>Model</th><th>Accuracy</th><th>Precision</th><th>Recall</th><th>F1-Score</th><th>ROC-AUC</th><th>Status</th></tr>
+                    </thead>
+                    <tbody>
+                        {table_html}
+                    </tbody>
+                </table>
+            </div>
+            {cv_section}
+            <div class='footer'>
+                Generated on {timestamp} • Social Platform Emotion Prediction System
+            </div>
+        </div>
+        <script>
+            {chart_js}
+        </script>
+    </body>
+    </html>
+    """
+
+    try:
+        file_name = 'social_platform_model_comparison_dashboard.html'
+        with open(file_name, 'w', encoding='utf-8') as f:
+            f.write(html)
+        print(f"🌐 Model comparison dashboard generated: {file_name}")
+        webbrowser.open(f"file://{os.path.abspath(file_name)}")
+        return file_name
+    except Exception as e:
+        print(f"❌ Failed to generate model comparison dashboard: {e}")
+        return None
+
 
 def generate_results_webpage(results_df, best_model_name, best_accuracy, feature_importance_data, 
                            classification_report_data, demo_predictions=None):
@@ -1491,7 +1614,6 @@ try:
     
     # Import random for generating random users inline
     import random
-    import datetime as dt
     
     # Platform definitions (copied from generate_random_user function structure)
     platforms_data = {
@@ -1589,6 +1711,15 @@ try:
         print(f"🔗 Opening in your default browser...")
     else:
         print(f"⚠️ Webpage generation had issues, but console results are still available.")
+
+    # Generate dedicated model comparison dashboard if multiple models present
+    if results_df is not None and len(results_df) > 1:
+        print("\n🌐 Generating model comparison dashboard...")
+        comparison_file = generate_model_comparison_webpage(results_df, cv_df)
+        if comparison_file:
+            print(f"✅ Model comparison dashboard generated: {comparison_file}")
+        else:
+            print("⚠️ Failed to generate model comparison dashboard.")
         
 except Exception as e:
     print(f"⚠️ Could not generate webpage ({str(e)}), but all results are available in console.")
@@ -1750,7 +1881,7 @@ def interactive_prediction():
             print(f"❌ Error: {str(e)}")
 
 import random
-import datetime
+# Removed standalone 'import datetime' to avoid shadowing 'from datetime import datetime'
 
 def generate_random_user():
     """Generate a random user profile with realistic social media behavior"""
@@ -1858,7 +1989,7 @@ def demo_predictions():
     """Demonstrate predictions with dynamically generated users"""
     print(f"\n🎭 Demo: Dynamic Emotion Predictions for Random Users")
     print(f"="*55)
-    print(f"⚡ Generated at: {datetime.datetime.now().strftime('%H:%M:%S')}")
+    print(f"⚡ Generated at: {datetime.now().strftime('%H:%M:%S')}")
     print(f"🎲 New random users created each run!")
     
     # Generate 5 random users for demonstration
