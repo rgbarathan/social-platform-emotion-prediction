@@ -325,18 +325,26 @@ def display_performance_results(y_test, y_pred, y_proba, model_name):
     print(f"│  ⚖️ Balanced Acc.: {bal_accuracy:.4f} ({bal_accuracy*100:.2f}%)              │")
     print(f"└─────────────────────────────────────────────────────────────────────┘")
     
-    # Confusion Matrix
+    # Confusion Matrix (with emotion names if available)
     try:
-        cm = confusion_matrix(y_test, y_pred)
-        labels = sorted(list(set(y_test)))
+        emotion_le = label_encoders.get('Dominant_Emotion') if 'label_encoders' in globals() else None
+        if emotion_le is not None:
+            y_test_dec = emotion_le.inverse_transform(np.array(y_test))
+            y_pred_dec = emotion_le.inverse_transform(np.array(y_pred))
+            labels = list(emotion_le.classes_)
+            cm = confusion_matrix(y_test_dec, y_pred_dec, labels=labels)
+        else:
+            labels = sorted(list(set(y_test)))
+            cm = confusion_matrix(y_test, y_pred, labels=labels)
+
         print(f"\n┌─────────────────────────────────────────────────────────────────────┐")
         print(f"│                          🧩 CONFUSION MATRIX                        │")
         print(f"└─────────────────────────────────────────────────────────────────────┘")
         # Header row
-        header = "      " + " ".join([f"{str(l):>6}" for l in labels])
+        header = "      " + " ".join([f"{str(l):>10}" for l in labels])
         print(header)
         for i, l in enumerate(labels):
-            row = " ".join([f"{v:>6}" for v in cm[i]])
+            row = " ".join([f"{int(v):>10}" for v in cm[i]])
             print(f"{str(l):>5} {row}")
     except Exception as e:
         print(f"⚠️ Confusion matrix unavailable: {e}")
@@ -346,9 +354,18 @@ def display_performance_results(y_test, y_pred, y_proba, model_name):
     print(f"│                     📋 DETAILED CLASSIFICATION REPORT               │")
     print(f"└─────────────────────────────────────────────────────────────────────┘")
     
-    # Get classification report as dict for better formatting
+    # Get classification report as dict (decode to names if possible)
     from sklearn.metrics import classification_report
-    report = classification_report(y_test, y_pred, output_dict=True)
+    try:
+        emotion_le = label_encoders.get('Dominant_Emotion') if 'label_encoders' in globals() else None
+        if emotion_le is not None:
+            y_test_dec = emotion_le.inverse_transform(np.array(y_test))
+            y_pred_dec = emotion_le.inverse_transform(np.array(y_pred))
+            report = classification_report(y_test_dec, y_pred_dec, output_dict=True)
+        else:
+            report = classification_report(y_test, y_pred, output_dict=True)
+    except Exception:
+        report = classification_report(y_test, y_pred, output_dict=True)
     
     print(f"\n{'Emotion':<12} {'Precision':<10} {'Recall':<10} {'F1-Score':<10} {'Support':<8}")
     print(f"─" * 60)
@@ -1755,10 +1772,8 @@ try:
     # Prepare confusion matrix and balanced accuracy for HTML
     from sklearn.metrics import confusion_matrix, balanced_accuracy_score
     try:
-        cm_labels = sorted(list(classification_report_dict.keys()))
-        # Remove summary keys if present
-        cm_labels = [l for l in cm_labels if l not in ['accuracy','macro avg','weighted avg']]
-        # Use decoded test labels already prepared
+        # Use emotion label encoder classes for consistent ordering
+        cm_labels = list(label_encoders['Dominant_Emotion'].classes_)
         cm_matrix = confusion_matrix(y_test_decoded, y_pred_decoded, labels=cm_labels)
     except Exception:
         cm_matrix = None

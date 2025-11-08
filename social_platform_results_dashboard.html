@@ -285,7 +285,7 @@
         <div class="header">
             <h1>🎭 Social Platform Emotion Prediction</h1>
             <div class="subtitle">Comprehensive Results Dashboard & Analysis</div>
-            <div class="subtitle">Generated on November 08, 2025 at 01:25 PM</div>
+            <div class="subtitle">Generated on November 08, 2025 at 01:46 PM</div>
         </div>
         
         <div class="content">
@@ -294,6 +294,7 @@
                     <h3>🏆 Best Model Performance</h3>
                     <h2 style="color: #2ecc71; margin: 10px 0;">98.02%</h2>
                     <p><strong>Model:</strong> Random Forest (Primary)</p>
+                    <p><strong>Balanced Accuracy:</strong> 98.20%</p>
                     <div class="performance-badge excellent">🎯 Outstanding Performance</div>
                 </div>
                 <div class="metric-card">
@@ -437,6 +438,33 @@
             
                     </tbody>
                 </table>
+            </div>
+
+            <!-- Confusion Matrix -->
+            <div class="chart-container">
+                <h3>🧩 Confusion Matrix</h3>
+                <p style="color: #666; margin-bottom: 15px;">
+                    Rows are true classes; columns are predicted classes.
+                </p>
+                
+        <table class="stats-table">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th style='text-align:center'>Aggression</th><th style='text-align:center'>Anger</th><th style='text-align:center'>Anxiety</th><th style='text-align:center'>Boredom</th><th style='text-align:center'>Happiness</th><th style='text-align:center'>Neutral</th><th style='text-align:center'>Sadness</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><th style='text-align:right;padding-right:8px'>Aggression</th><td style='text-align:center'>0</td><td style='text-align:center'>0</td><td style='text-align:center'>0</td><td style='text-align:center'>0</td><td style='text-align:center'>0</td><td style='text-align:center'>0</td><td style='text-align:center'>0</td></tr>
+<tr><th style='text-align:right;padding-right:8px'>Anger</th><td style='text-align:center'>0</td><td style='text-align:center'>9</td><td style='text-align:center'>0</td><td style='text-align:center'>0</td><td style='text-align:center'>0</td><td style='text-align:center'>0</td><td style='text-align:center'>0</td></tr>
+<tr><th style='text-align:right;padding-right:8px'>Anxiety</th><td style='text-align:center'>0</td><td style='text-align:center'>0</td><td style='text-align:center'>21</td><td style='text-align:center'>0</td><td style='text-align:center'>1</td><td style='text-align:center'>0</td><td style='text-align:center'>0</td></tr>
+<tr><th style='text-align:right;padding-right:8px'>Boredom</th><td style='text-align:center'>0</td><td style='text-align:center'>0</td><td style='text-align:center'>0</td><td style='text-align:center'>15</td><td style='text-align:center'>0</td><td style='text-align:center'>0</td><td style='text-align:center'>1</td></tr>
+<tr><th style='text-align:right;padding-right:8px'>Happiness</th><td style='text-align:center'>0</td><td style='text-align:center'>0</td><td style='text-align:center'>0</td><td style='text-align:center'>0</td><td style='text-align:center'>13</td><td style='text-align:center'>0</td><td style='text-align:center'>0</td></tr>
+<tr><th style='text-align:right;padding-right:8px'>Neutral</th><td style='text-align:center'>0</td><td style='text-align:center'>0</td><td style='text-align:center'>0</td><td style='text-align:center'>0</td><td style='text-align:center'>0</td><td style='text-align:center'>27</td><td style='text-align:center'>0</td></tr>
+<tr><th style='text-align:right;padding-right:8px'>Sadness</th><td style='text-align:center'>0</td><td style='text-align:center'>0</td><td style='text-align:center'>0</td><td style='text-align:center'>0</td><td style='text-align:center'>0</td><td style='text-align:center'>0</td><td style='text-align:center'>14</td></tr>
+            </tbody>
+        </table>
+        
             </div>
             
             <!-- Feature Importance Ranking Table -->
@@ -647,11 +675,11 @@
         <div class="chart-container"><h3>🎲 Random User Predictions</h3><div class="predictions-grid">
             <div class="prediction-card" style="animation-delay: 0.1s;">
                 <div class="prediction-header">
-                    <div class="user-avatar">😰</div>
+                    <div class="user-avatar">😐</div>
                     <div class="user-info">
-                        <h4 style="margin: 0; color: #2c3e50;">👤 Quinn</h4>
+                        <h4 style="margin: 0; color: #2c3e50;">👤 Alex</h4>
                         <p style="margin: 5px 0; color: #7f8c8d; font-size: 0.9em;">
-                            18yr Female • Instagram
+                            46yr Non-binary • LinkedIn
                         </p>
                     </div>
                     <div class="prediction-number">#1</div>
@@ -659,21 +687,21 @@
                 
                 <div class="prediction-emotion">
                     <div style="font-size: 3em; text-align: center; margin: 15px 0;">
-                        😰
+                        😐
                     </div>
-                    <div style="text-align: center; font-size: 1.5em; font-weight: bold; color: #3498db; margin-bottom: 10px;">
-                        Anxiety
+                    <div style="text-align: center; font-size: 1.5em; font-weight: bold; color: #e74c3c; margin-bottom: 10px;">
+                        Neutral
                     </div>
                 </div>
                 
                 <div class="confidence-meter">
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
                         <span style="font-weight: bold; color: #34495e;">Confidence</span>
-                        <span style="font-weight: bold; color: #3498db;">⚖️ Moderate</span>
+                        <span style="font-weight: bold; color: #e74c3c;">❓ Low</span>
                     </div>
                     <div class="confidence-bar-bg">
-                        <div class="confidence-bar-fill" style="width: 50.0%; background: linear-gradient(90deg, #3498db, #2980b9);">
-                            <span class="confidence-text">50.0%</span>
+                        <div class="confidence-bar-fill" style="width: 37.0%; background: linear-gradient(90deg, #e74c3c, #c0392b);">
+                            <span class="confidence-text">37.0%</span>
                         </div>
                     </div>
                 </div>
@@ -681,27 +709,27 @@
                 <div class="user-stats">
                     <div class="stat-item">
                         <div class="stat-icon">⏱️</div>
-                        <div class="stat-value">197 min</div>
+                        <div class="stat-value">119 min</div>
                         <div class="stat-label">Daily Usage</div>
                     </div>
                     <div class="stat-item">
                         <div class="stat-icon">📝</div>
-                        <div class="stat-value">5</div>
+                        <div class="stat-value">2</div>
                         <div class="stat-label">Posts/Day</div>
                     </div>
                     <div class="stat-item">
                         <div class="stat-icon">👍</div>
-                        <div class="stat-value">148</div>
+                        <div class="stat-value">17</div>
                         <div class="stat-label">Likes</div>
                     </div>
                     <div class="stat-item">
                         <div class="stat-icon">💬</div>
-                        <div class="stat-value">19</div>
+                        <div class="stat-value">8</div>
                         <div class="stat-label">Comments</div>
                     </div>
                     <div class="stat-item">
                         <div class="stat-icon">✉️</div>
-                        <div class="stat-value">67</div>
+                        <div class="stat-value">33</div>
                         <div class="stat-label">Messages</div>
                     </div>
                 </div>
@@ -720,11 +748,11 @@
             
             <div class="prediction-card" style="animation-delay: 0.2s;">
                 <div class="prediction-header">
-                    <div class="user-avatar">😊</div>
+                    <div class="user-avatar">😰</div>
                     <div class="user-info">
-                        <h4 style="margin: 0; color: #2c3e50;">👤 Casey</h4>
+                        <h4 style="margin: 0; color: #2c3e50;">👤 Jordan</h4>
                         <p style="margin: 5px 0; color: #7f8c8d; font-size: 0.9em;">
-                            44yr Non-binary • Facebook
+                            48yr Male • Facebook
                         </p>
                     </div>
                     <div class="prediction-number">#2</div>
@@ -732,10 +760,10 @@
                 
                 <div class="prediction-emotion">
                     <div style="font-size: 3em; text-align: center; margin: 15px 0;">
-                        😊
+                        😰
                     </div>
                     <div style="text-align: center; font-size: 1.5em; font-weight: bold; color: #e74c3c; margin-bottom: 10px;">
-                        Happiness
+                        Anxiety
                     </div>
                 </div>
                 
@@ -745,8 +773,8 @@
                         <span style="font-weight: bold; color: #e74c3c;">❓ Low</span>
                     </div>
                     <div class="confidence-bar-bg">
-                        <div class="confidence-bar-fill" style="width: 28.999999999999996%; background: linear-gradient(90deg, #e74c3c, #c0392b);">
-                            <span class="confidence-text">29.0%</span>
+                        <div class="confidence-bar-fill" style="width: 33.0%; background: linear-gradient(90deg, #e74c3c, #c0392b);">
+                            <span class="confidence-text">33.0%</span>
                         </div>
                     </div>
                 </div>
@@ -754,27 +782,27 @@
                 <div class="user-stats">
                     <div class="stat-item">
                         <div class="stat-icon">⏱️</div>
-                        <div class="stat-value">56 min</div>
+                        <div class="stat-value">45 min</div>
                         <div class="stat-label">Daily Usage</div>
                     </div>
                     <div class="stat-item">
                         <div class="stat-icon">📝</div>
-                        <div class="stat-value">1</div>
+                        <div class="stat-value">0</div>
                         <div class="stat-label">Posts/Day</div>
                     </div>
                     <div class="stat-item">
                         <div class="stat-icon">👍</div>
-                        <div class="stat-value">43</div>
+                        <div class="stat-value">73</div>
                         <div class="stat-label">Likes</div>
                     </div>
                     <div class="stat-item">
                         <div class="stat-icon">💬</div>
-                        <div class="stat-value">22</div>
+                        <div class="stat-value">21</div>
                         <div class="stat-label">Comments</div>
                     </div>
                     <div class="stat-item">
                         <div class="stat-icon">✉️</div>
-                        <div class="stat-value">13</div>
+                        <div class="stat-value">48</div>
                         <div class="stat-label">Messages</div>
                     </div>
                 </div>
@@ -793,11 +821,11 @@
             
             <div class="prediction-card" style="animation-delay: 0.30000000000000004s;">
                 <div class="prediction-header">
-                    <div class="user-avatar">😰</div>
+                    <div class="user-avatar">😊</div>
                     <div class="user-info">
-                        <h4 style="margin: 0; color: #2c3e50;">👤 Taylor</h4>
+                        <h4 style="margin: 0; color: #2c3e50;">👤 Quinn</h4>
                         <p style="margin: 5px 0; color: #7f8c8d; font-size: 0.9em;">
-                            31yr Female • Instagram
+                            19yr Non-binary • Snapchat
                         </p>
                     </div>
                     <div class="prediction-number">#3</div>
@@ -805,21 +833,21 @@
                 
                 <div class="prediction-emotion">
                     <div style="font-size: 3em; text-align: center; margin: 15px 0;">
-                        😰
+                        😊
                     </div>
-                    <div style="text-align: center; font-size: 1.5em; font-weight: bold; color: #3498db; margin-bottom: 10px;">
-                        Anxiety
+                    <div style="text-align: center; font-size: 1.5em; font-weight: bold; color: #e74c3c; margin-bottom: 10px;">
+                        Happiness
                     </div>
                 </div>
                 
                 <div class="confidence-meter">
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
                         <span style="font-weight: bold; color: #34495e;">Confidence</span>
-                        <span style="font-weight: bold; color: #3498db;">⚖️ Moderate</span>
+                        <span style="font-weight: bold; color: #e74c3c;">❓ Low</span>
                     </div>
                     <div class="confidence-bar-bg">
-                        <div class="confidence-bar-fill" style="width: 46.0%; background: linear-gradient(90deg, #3498db, #2980b9);">
-                            <span class="confidence-text">46.0%</span>
+                        <div class="confidence-bar-fill" style="width: 36.0%; background: linear-gradient(90deg, #e74c3c, #c0392b);">
+                            <span class="confidence-text">36.0%</span>
                         </div>
                     </div>
                 </div>
@@ -827,27 +855,27 @@
                 <div class="user-stats">
                     <div class="stat-item">
                         <div class="stat-icon">⏱️</div>
-                        <div class="stat-value">252 min</div>
+                        <div class="stat-value">215 min</div>
                         <div class="stat-label">Daily Usage</div>
                     </div>
                     <div class="stat-item">
                         <div class="stat-icon">📝</div>
-                        <div class="stat-value">4</div>
+                        <div class="stat-value">5</div>
                         <div class="stat-label">Posts/Day</div>
                     </div>
                     <div class="stat-item">
                         <div class="stat-icon">👍</div>
-                        <div class="stat-value">142</div>
+                        <div class="stat-value">69</div>
                         <div class="stat-label">Likes</div>
                     </div>
                     <div class="stat-item">
                         <div class="stat-icon">💬</div>
-                        <div class="stat-value">30</div>
+                        <div class="stat-value">3</div>
                         <div class="stat-label">Comments</div>
                     </div>
                     <div class="stat-item">
                         <div class="stat-icon">✉️</div>
-                        <div class="stat-value">18</div>
+                        <div class="stat-value">36</div>
                         <div class="stat-label">Messages</div>
                     </div>
                 </div>
@@ -867,7 +895,7 @@
         
         <div class="timestamp">
             🕒 Report generated automatically by Social Platform Emotion Prediction System<br>
-            📅 Saturday, November 08, 2025 at 01:25:38 PM
+            📅 Saturday, November 08, 2025 at 01:46:54 PM
         </div>
     </div>
     
