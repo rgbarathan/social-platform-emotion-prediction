@@ -346,8 +346,25 @@ def display_performance_results(y_test, y_pred, y_proba, model_name):
         for i, l in enumerate(labels):
             row = " ".join([f"{int(v):>10}" for v in cm[i]])
             print(f"{str(l):>5} {row}")
+        # Compute top confusions (off-diagonal)
+        try:
+            off_diag = []
+            for i in range(len(labels)):
+                for j in range(len(labels)):
+                    if i == j:
+                        continue
+                    count = int(cm[i, j])
+                    if count > 0:
+                        row_total = int(np.sum(cm[i, :])) or 1
+                        rate = count / row_total
+                        off_diag.append((labels[i], labels[j], count, rate))
+            off_diag.sort(key=lambda x: x[2], reverse=True)
+            top_confusions = off_diag[:5]
+        except Exception:
+            top_confusions = []
     except Exception as e:
         print(f"⚠️ Confusion matrix unavailable: {e}")
+        top_confusions = []
 
     # Detailed Classification Report
     print(f"\n┌─────────────────────────────────────────────────────────────────────┐")
@@ -383,6 +400,38 @@ def display_performance_results(y_test, y_pred, y_proba, model_name):
     if 'weighted avg' in report:
         weighted = report['weighted avg']
         print(f"{'Weighted':<12} {weighted['precision']:<10.3f} {weighted['recall']:<10.3f} {weighted['f1-score']:<10.3f} {int(weighted['support']):<8}")
+
+    # Error Analysis Section
+    print(f"\n┌─────────────────────────────────────────────────────────────────────┐")
+    print(f"│                           🧪 ERROR ANALYSIS                         │")
+    print(f"└─────────────────────────────────────────────────────────────────────┘")
+    total = len(y_test)
+    errors = int(np.sum(np.array(y_test) != np.array(y_pred)))
+    error_rate = errors / total if total else 0.0
+    print(f"Total samples: {total}")
+    print(f"Misclassifications: {errors} ({error_rate*100:.2f}%)")
+    # High-confidence accuracy (>= 70%)
+    if y_proba is not None:
+        try:
+            max_conf = np.max(y_proba, axis=1)
+            mask = max_conf >= 0.70
+            n_high = int(np.sum(mask))
+            if n_high > 0:
+                high_acc = np.mean(np.array(y_pred)[mask] == np.array(y_test)[mask])
+                print(f"High-confidence predictions (>=70%): {n_high} • Accuracy: {high_acc*100:.2f}%")
+            else:
+                print("High-confidence predictions (>=70%): 0 • Accuracy: N/A")
+        except Exception as e:
+            print(f"High-confidence analysis unavailable: {e}")
+    else:
+        print("High-confidence analysis unavailable: model did not provide probabilities")
+    # Top confusions
+    if top_confusions:
+        print("Top confusions (true → predicted):")
+        for true_lbl, pred_lbl, cnt, rate in top_confusions:
+            print(f" - {true_lbl} → {pred_lbl}: {cnt} ({rate*100:.1f}% of {true_lbl})")
+    else:
+        print("No significant confusions detected or insufficient data.")
 
 # Call the improved display function
 display_performance_results(y_test, y_pred, y_proba, best_model_name)
@@ -742,7 +791,8 @@ def generate_model_comparison_webpage(results_df, cv_df=None):
 
 def generate_results_webpage(results_df, best_model_name, best_accuracy, feature_importance_data, 
                            classification_report_data, demo_predictions=None,
-                           confusion_matrix_data=None, cm_labels=None, balanced_accuracy=None):
+                           confusion_matrix_data=None, cm_labels=None, balanced_accuracy=None,
+                           error_analysis=None):
     """Generate a comprehensive HTML webpage showcasing all results"""
     
     def generate_demo_prediction_cards(demo_predictions):
@@ -1178,6 +1228,48 @@ def generate_results_webpage(results_df, best_model_name, best_accuracy, feature
         </table>
         """
 
+    def generate_error_analysis_section(error_analysis):
+        """Generate HTML for error analysis metrics"""
+        if not error_analysis:
+            return "<p style='color:#666;'>Error analysis unavailable.</p>"
+        mis = error_analysis.get('misclassifications', 0)
+        total = error_analysis.get('total', 0)
+        err_rate = error_analysis.get('error_rate', 0.0)
+        high_n = error_analysis.get('high_conf_count', 0)
+        high_acc = error_analysis.get('high_conf_accuracy', None)
+        top_confusions = error_analysis.get('top_confusions', [])
+        high_acc_html = f"{high_acc*100:.2f}%" if high_acc is not None else "N/A"
+        confusion_rows = ''
+        if top_confusions:
+            for true_lbl, pred_lbl, cnt, rate in top_confusions:
+                confusion_rows += f"<tr><td>{true_lbl}</td><td>{pred_lbl}</td><td>{cnt}</td><td>{rate*100:.2f}%</td></tr>"
+        else:
+            confusion_rows = "<tr><td colspan='4' style='text-align:center;color:#666;'>No significant confusions</td></tr>"
+        return f"""
+        <div class='metric-grid'>
+            <div class='metric-card'>
+                <h4>📦 Samples</h4>
+                <p><strong>Total:</strong> {total}</p>
+                <p><strong>Errors:</strong> {mis} ({err_rate*100:.2f}%)</p>
+            </div>
+            <div class='metric-card'>
+                <h4>🎯 High-Confidence (≥70%)</h4>
+                <p><strong>Count:</strong> {high_n}</p>
+                <p><strong>Accuracy:</strong> {high_acc_html}</p>
+            </div>
+            <div class='metric-card'>
+                <h4>🧪 Error Rate</h4>
+                <p style='font-size:1.6em;color:#e74c3c;margin:0;'>{err_rate*100:.2f}%</p>
+                <p>Proportion of misclassified samples</p>
+            </div>
+        </div>
+        <h4 style='margin-top:25px;'>🔍 Top Confusions (True → Predicted)</h4>
+        <table class='stats-table'>
+            <thead><tr><th>True</th><th>Predicted</th><th>Count</th><th>Rate (of True)</th></tr></thead>
+            <tbody>{confusion_rows}</tbody>
+        </table>
+        """
+
     # Create the complete HTML content
     html_content = f"""
 <!DOCTYPE html>
@@ -1544,6 +1636,13 @@ def generate_results_webpage(results_df, best_model_name, best_accuracy, feature
                 </p>
                 {generate_confusion_matrix_html(confusion_matrix_data, cm_labels)}
             </div>
+
+            <!-- Error Analysis -->
+            <div class="chart-container">
+                <h3>🧪 Error Analysis</h3>
+                <p style="color:#666;margin-bottom:15px;">Deeper look at misclassifications, high-confidence prediction quality, and the most frequent confusions.</p>
+                {generate_error_analysis_section(error_analysis)}
+            </div>
             
             <!-- Feature Importance Ranking Table -->
             <div class="chart-container">
@@ -1784,6 +1883,53 @@ try:
     except Exception:
         balanced_acc = None
 
+    # Build error analysis dictionary (recompute lightweight metrics)
+    try:
+        total_samples = len(y_test)
+        misclassifications = int(np.sum(y_test != y_pred_for_report))
+        error_rate = misclassifications / total_samples if total_samples else 0.0
+        high_conf_count = 0
+        high_conf_accuracy = None
+        top_confusions = []
+        # High confidence subset
+        if hasattr(clf, 'predict_proba'):
+            try:
+                proba_matrix = clf.predict_proba(X_test)
+                max_conf = np.max(proba_matrix, axis=1)
+                mask = max_conf >= 0.70
+                high_conf_count = int(np.sum(mask))
+                if high_conf_count > 0:
+                    high_conf_accuracy = float(np.mean(y_pred_for_report[mask] == y_test[mask]))
+            except Exception:
+                pass
+        # Top confusions from confusion matrix
+        if cm_matrix is not None:
+            try:
+                off_diag = []
+                for i in range(len(cm_labels)):
+                    row_total = int(np.sum(cm_matrix[i, :])) or 1
+                    for j in range(len(cm_labels)):
+                        if i == j:
+                            continue
+                        count = int(cm_matrix[i, j])
+                        if count > 0:
+                            rate = count / row_total
+                            off_diag.append((cm_labels[i], cm_labels[j], count, rate))
+                off_diag.sort(key=lambda x: x[2], reverse=True)
+                top_confusions = off_diag[:5]
+            except Exception:
+                top_confusions = []
+        error_analysis_dict = {
+            'total': total_samples,
+            'misclassifications': misclassifications,
+            'error_rate': error_rate,
+            'high_conf_count': high_conf_count,
+            'high_conf_accuracy': high_conf_accuracy,
+            'top_confusions': top_confusions
+        }
+    except Exception:
+        error_analysis_dict = None
+
     webpage_file = generate_results_webpage(
         results_df=results_df,
         best_model_name=best_model_name,
@@ -1793,7 +1939,8 @@ try:
         demo_predictions=demo_predictions,
         confusion_matrix_data=cm_matrix,
         cm_labels=cm_labels,
-        balanced_accuracy=balanced_acc
+        balanced_accuracy=balanced_acc,
+        error_analysis=error_analysis_dict
     )
     
     if webpage_file:
