@@ -37,7 +37,7 @@ Project Social Platform/
         └── test_original.csv
 ```
 
-**Note**: The `original_backup/` folder contains the unprocessed Kaggle data for transparency and reproducibility. The main dataset files contain the cleaned, production-ready data used for analysis.
+**Critical Dataset Usage Warning**: Use ONLY `dataset/train.csv`, `dataset/val.csv`, and `dataset/test.csv` for any training, validation, evaluation, or reproduction. The `dataset/original_backup/` folder contains the unprocessed (corrupted) source files preserved strictly for audit and transparency. Do **not** load or model against those originals; they violate the cleaned data assumptions (types, ranges, labels) relied on by the code.
 
 ## 📊 Dataset Information
 
@@ -99,7 +99,7 @@ Project Social Platform/
   - Neutral
   - Sadness
 
-## 🚀 Getting Started
+## 🚀 Getting Started (Quick Setup)
 
 ### Prerequisites
 
@@ -108,9 +108,10 @@ Project Social Platform/
 
 ### Installation (macOS / zsh)
 
-1. **Clone or download the project**
+1. **Clone the repository**
    ```bash
-   cd "Project Social Platform"
+   git clone https://github.com/rgbarathan/social-platform-emotion-prediction.git
+   cd social-platform-emotion-prediction
    ```
 
 2. **Create a virtual environment** (recommended)
@@ -124,16 +125,33 @@ Project Social Platform/
    pip install -r requirements.txt
    ```
 
-### Running the Analysis
+4. **Run the main script (non-interactive core run + dashboards)**
+   ```bash
+   python "Social Platform.py"
+   ```
 
-Execute the main script for the complete experience:
-```bash
-python "Social Platform.py"
+5. **Enable interactive menu (when prompted)**
+   - After core evaluation completes, type `y` and press Enter.
+   - Choose from the numbered options (user generation, deep dive, comparison, etc.).
+
+### 🔐 Reproducibility & Data Integrity
+Before running, verify the three cleaned CSVs exist:
 ```
+dataset/train.csv
+dataset/val.csv
+dataset/test.csv
+```
+If missing or altered, restore them from version control. Never substitute files from `dataset/original_backup/`.
 
-**🎮 Interactive Experience**: After the analysis completes, you'll be prompted to explore additional features:
-- Enter `y` for an interactive menu with 8 different demo options
-- Press Enter to finish and see just the core analysis
+### 🧪 Running the Analysis (Summary)
+
+- Non-interactive: just run the script and press Enter at the menu prompt to skip extras.
+- Interactive: enter `y` and explore extended options.
+- Dashboards generated: `social_platform_results_dashboard.html` and (after comparison) `social_platform_model_comparison_dashboard.html`.
+
+**Interactive Trigger**:
+- Prompt appears only after the primary model evaluation finishes.
+- Press Enter (blank) for a quick exit, or `y` to open the 8-option menu.
 
 ### 🎮 **Integrated Demo System**
 
@@ -160,13 +178,15 @@ The main script now includes a comprehensive interactive menu:
 - **Automatic Selection**: System picks the best performing model
 - **Visual Comparison**: Interactive charts comparing all models
 
-#### **Algorithm Performance Results**
-| Algorithm | Accuracy | F1-Score | ROC-AUC | CV Score |
-|-----------|----------|----------|---------|----------|
-| 🥇 Random Forest | 98.02% | 0.9803 | 0.9982 | 98.73% ± 0.24% |
-| 🥈 Gradient Boosting | 97.03% | 0.9704 | 0.9926 | 98.34% ± 0.39% |
-| 🥉 Support Vector Machine | 74.26% | 0.7444 | 0.9508 | 74.83% ± 1.62% |
-| 🏅 Logistic Regression | 53.47% | 0.5221 | 0.8623 | 54.54% ± 0.84% |
+#### **Algorithm Performance Results (Example From Prior Run)**
+| Algorithm | Accuracy | F1-Score | ROC-AUC |
+|-----------|----------|----------|---------|
+| Random Forest | ~98% | ~0.98 | ~0.998 | High |
+| Gradient Boosting | ~97% | ~0.97 | ~0.99 | High |
+| SVM | Lower | Lower | ~0.95 | Moderate |
+| Logistic Regression | Lower | Lower | ~0.86 | Moderate |
+
+> Exact metrics may vary slightly per run; full detailed comparison (with CV stats) appears after you select the advanced comparison option.
 
 #### **Key Insights**
 - **Random Forest** wins with outstanding 98% accuracy
@@ -262,31 +282,33 @@ python dynamic_demo.py         # Dynamic showcase (now integrated)
 
 ## 📈 Model Performance
 
-### Results Summary:
-- **Overall Accuracy**: 98%
-- **ROC-AUC Score**: 99.8%
-- **Precision**: 93-100% across all classes
-- **Recall**: 94-100% across all classes
-- **F1-Score**: 96-100% across all classes
+### Results Summary (Representative)
+- **Accuracy**: ~98%
+- **Balanced Accuracy**: ~98%
+- **Weighted F1**: ~98%
+- **ROC-AUC**: ~99.8% (multi-class OVR)
+> Use the generated HTML dashboard for exact current run values.
 
 ### Performance by Emotion:
 
-| Emotion    | Precision | Recall | F1-Score | Support |
-|------------|-----------|---------|----------|---------|
-| Aggression | 100%      | 100%    | 100%     | 9       |
-| Anger      | 100%      | 95%     | 98%      | 22      |
-| Anxiety    | 100%      | 94%     | 97%      | 16      |
-| Boredom    | 93%       | 100%    | 96%      | 13      |
-| Happiness  | 100%      | 100%    | 100%     | 27      |
-| Neutral    | 93%       | 100%    | 97%      | 14      |
-| Sadness    | -         | -       | -        | 0       |
+| Emotion (Test Set Example) | Precision | Recall | F1 | Support |
+|----------------------------|-----------|--------|----|---------|
+| Anger                      | 1.00      | 1.00   |1.00| 9       |
+| Anxiety                    | 1.00      | 0.95   |0.98| 22      |
+| Boredom                    | 1.00      | 0.94   |0.97| 16      |
+| Happiness                  | 0.93      | 1.00   |0.96| 13      |
+| Neutral                    | 1.00      | 1.00   |1.00| 27      |
+| Sadness                    | 0.93      | 1.00   |0.97| 14      |
+| (Aggression not in test)   | —         | —      | —  | 0       |
+> Aggression appears only in validation in the current cleaned split; test evaluation covers six emotions.
 
-### 🔝 Top Predictive Features:
-1. **Daily_Usage_Time_minutes** (18.3%) - Most important predictor
-2. **Likes_Received_Per_Day** (17.1%) - Social validation metric  
-3. **Age** (16.4%) - Demographic factor
-4. **Comments_Received_Per_Day** (14.2%) - Engagement depth
-5. **Messages_Sent_Per_Day** (12.5%) - Communication activity
+### 🔝 Top Predictive Features (Typical Order):
+1. Daily_Usage_Time_minutes
+2. Likes_Received_Per_Day
+3. Age
+4. Comments_Received_Per_Day
+5. Messages_Sent_Per_Day
+> Percentages vary slightly per training run; see HTML dashboard for current importances.
 
 ## 🛠️ Technical Implementation
 
@@ -322,13 +344,10 @@ python dynamic_demo.py         # Dynamic showcase (now integrated)
    - Interactive model comparison charts
    - Performance ranking and statistical significance
 
-### Libraries Used:
-- **pandas**: Data manipulation and analysis
-- **scikit-learn**: Machine learning algorithms and metrics
-- **plotly**: Interactive data visualization
-- **numpy**: Numerical computations
-  
-Optional for extended comparison (install if needed): xgboost, lightgbm
+### Libraries Used
+Core: pandas, scikit-learn, numpy, plotly
+Optional (only if you manually add): xgboost, lightgbm
+> Requirements file lists only essentials; advanced libs are intentionally excluded to simplify setup.
 
 ## 📊 Output
 
@@ -406,7 +425,7 @@ The enhanced script now generates:
 - **Data Cleaning**: Applied rigorous data validation and cleaning processes to ensure research-grade data quality
 - **Data Privacy**: All user data is anonymized and used for research purposes only  
 - **Model Validation**: Excellent performance achieved through proper data preprocessing and validation methodology
-- **Reproducibility**: Original corrupted data preserved in `original_backup/` for transparency and research integrity
+- **Reproducibility**: Original corrupted data preserved in `original_backup/` (do not use for modeling)
 - **Data Quality**: Current dataset represents industry-standard clean data practices and validation procedures
 - **Academic Integrity**: Full attribution to original Kaggle source with transparent documentation of all preprocessing steps
 
