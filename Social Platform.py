@@ -1138,7 +1138,7 @@ def generate_results_webpage(results_df, best_model_name, best_accuracy, feature
         
         return ''.join(rows)
 
-    def generate_chart_data():
+    def generate_chart_data(cm_heatmap_js=""):
         """Generate chart data for JavaScript"""
         chart_js = ""
         
@@ -1212,6 +1212,10 @@ def generate_results_webpage(results_df, best_model_name, best_accuracy, feature
                 }}
             """
         
+        # Add confusion matrix heatmap if provided
+        if cm_heatmap_js:
+            chart_js += "\n" + cm_heatmap_js
+        
         # (Removed Feature Importance Chart generation per user request)
         
         # (Removed Classification Performance Chart generation per user request)
@@ -1219,9 +1223,9 @@ def generate_results_webpage(results_df, best_model_name, best_accuracy, feature
         return chart_js
 
     def generate_confusion_matrix_html(cm, labels):
-        """Render confusion matrix as an HTML table"""
+        """Render confusion matrix as an HTML table and Plotly heatmap"""
         if cm is None or labels is None:
-            return "<p style='color:#666;'>Confusion matrix unavailable.</p>"
+            return "<p style='color:#666;'>Confusion matrix unavailable.</p>", ""
         # Header
         header_cells = ''.join([f"<th style='text-align:center'>{str(l)}</th>" for l in labels])
         # Rows
@@ -1230,7 +1234,8 @@ def generate_results_webpage(results_df, best_model_name, best_accuracy, feature
             row_vals = ''.join([f"<td style='text-align:center'>{int(v)}</td>" for v in cm[i]])
             body_rows.append(f"<tr><th style='text-align:right;padding-right:8px'>{str(l)}</th>{row_vals}</tr>")
         body_html = '\n'.join(body_rows)
-        return f"""
+        
+        table_html = f"""
         <table class="stats-table">
             <thead>
                 <tr>
@@ -1243,6 +1248,82 @@ def generate_results_webpage(results_df, best_model_name, best_accuracy, feature
             </tbody>
         </table>
         """
+        
+        # Generate Plotly heatmap JavaScript
+        # Convert cm to Python list for JS
+        cm_list = cm.tolist() if hasattr(cm, 'tolist') else [[int(v) for v in row] for row in cm]
+        labels_list = [str(l) for l in labels]
+        
+        # Build hover text with TP/FP/FN annotations
+        hover_texts = []
+        total = sum(sum(row) for row in cm_list)
+        for i, true_label in enumerate(labels_list):
+            row_texts = []
+            for j, pred_label in enumerate(labels_list):
+                count = cm_list[i][j]
+                if i == j:
+                    cell_type = "TP (True Positive)"
+                else:
+                    cell_type = "FN (False Negative)" if j != i else "FP (False Positive)"
+                hover_text = f"True: {true_label}<br>Predicted: {pred_label}<br>Count: {count}<br>Type: {cell_type}"
+                row_texts.append(hover_text)
+            hover_texts.append(row_texts)
+        
+        heatmap_js = f"""
+        // Confusion Matrix Heatmap
+        var cmData = [{cm_list}];
+        var cmLabels = {labels_list};
+        var hoverTexts = {hover_texts};
+        
+        var confusionHeatmap = [{{
+            z: cmData,
+            x: cmLabels,
+            y: cmLabels,
+            type: 'heatmap',
+            colorscale: [
+                [0, 'rgb(255, 255, 255)'],
+                [0.2, 'rgb(220, 240, 255)'],
+                [0.5, 'rgb(100, 180, 255)'],
+                [0.8, 'rgb(50, 100, 200)'],
+                [1, 'rgb(20, 50, 150)']
+            ],
+            text: cmData,
+            hovertext: hoverTexts,
+            hoverinfo: 'text',
+            texttemplate: '%{{text}}',
+            textfont: {{
+                size: 14,
+                color: 'white'
+            }},
+            showscale: true,
+            colorbar: {{
+                title: 'Count',
+                titleside: 'right'
+            }}
+        }}];
+        
+        var confusionLayout = {{
+            title: 'Confusion Matrix Heatmap',
+            xaxis: {{
+                title: 'Predicted Emotion',
+                side: 'bottom',
+                tickangle: -45
+            }},
+            yaxis: {{
+                title: 'True Emotion',
+                autorange: 'reversed'
+            }},
+            font: {{ family: 'Segoe UI, sans-serif' }},
+            height: 600,
+            margin: {{ l: 100, r: 100, t: 100, b: 100 }}
+        }};
+        
+        if (document.getElementById('confusion-matrix-heatmap')) {{
+            Plotly.newPlot('confusion-matrix-heatmap', confusionHeatmap, confusionLayout);
+        }}
+        """
+        
+        return table_html, heatmap_js
 
     def generate_error_analysis_section(error_analysis):
         """Generate HTML for error analysis metrics"""
@@ -1285,6 +1366,9 @@ def generate_results_webpage(results_df, best_model_name, best_accuracy, feature
             <tbody>{confusion_rows}</tbody>
         </table>
         """
+
+    # Generate confusion matrix table and heatmap separately
+    cm_table_html, cm_heatmap_js = generate_confusion_matrix_html(confusion_matrix_data, cm_labels)
 
     # Create the complete HTML content
     html_content = f"""
@@ -1648,9 +1732,11 @@ def generate_results_webpage(results_df, best_model_name, best_accuracy, feature
             <div class="chart-container">
                 <h3>🧩 Confusion Matrix</h3>
                 <p style="color: #666; margin-bottom: 15px;">
-                    Rows are true classes; columns are predicted classes.
+                    Rows are true classes; columns are predicted classes. Diagonal cells show True Positives (TP), off-diagonal show False Negatives (FN) and False Positives (FP).
                 </p>
-                {generate_confusion_matrix_html(confusion_matrix_data, cm_labels)}
+                <div id="confusion-matrix-heatmap" style="width: 100%; height: 600px;"></div>
+                <h4 style="margin-top: 25px;">📊 Detailed Counts</h4>
+                {cm_table_html}
             </div>
 
             <!-- Error Analysis -->
@@ -1744,7 +1830,7 @@ def generate_results_webpage(results_df, best_model_name, best_accuracy, feature
     </div>
     
     <script>
-        {generate_chart_data()}
+        {generate_chart_data(cm_heatmap_js)}
     </script>
 </body>
 </html>
