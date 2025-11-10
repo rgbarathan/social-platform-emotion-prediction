@@ -285,7 +285,7 @@
         <div class="header">
             <h1>🎭 Social Platform Emotion Prediction</h1>
             <div class="subtitle">Comprehensive Results Dashboard & Analysis</div>
-            <div class="subtitle">Generated on November 08, 2025 at 04:13 PM</div>
+            <div class="subtitle">Generated on November 10, 2025 at 11:20 AM</div>
         </div>
         
         <div class="content">
@@ -442,10 +442,24 @@
 
             <!-- Confusion Matrix -->
             <div class="chart-container">
-                <h3>🧩 Confusion Matrix</h3>
+                <h3>🧩 Confusion Matrix Visualizations</h3>
                 <p style="color: #666; margin-bottom: 15px;">
-                    Rows are true classes; columns are predicted classes.
+                    Rows represent true emotions; columns represent predicted emotions. 
+                    <strong>Diagonal cells (green)</strong> = True Positives (correct predictions). 
+                    <strong>Off-diagonal cells (red/orange)</strong> = Misclassifications.
                 </p>
+                
+                <!-- Side by side heatmaps -->
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 25px;">
+                    <div>
+                        <div id="confusion-matrix-heatmap-raw" style="width: 100%; height: 550px;"></div>
+                    </div>
+                    <div>
+                        <div id="confusion-matrix-heatmap-normalized" style="width: 100%; height: 550px;"></div>
+                    </div>
+                </div>
+                
+                <h4 style="margin-top: 25px;">📊 Detailed Counts Table</h4>
                 
         <table class="stats-table">
             <thead>
@@ -705,11 +719,11 @@
         <div class="chart-container"><h3>🎲 Random User Predictions</h3><div class="predictions-grid">
             <div class="prediction-card" style="animation-delay: 0.1s;">
                 <div class="prediction-header">
-                    <div class="user-avatar">😠</div>
+                    <div class="user-avatar">😊</div>
                     <div class="user-info">
-                        <h4 style="margin: 0; color: #2c3e50;">👤 Casey</h4>
+                        <h4 style="margin: 0; color: #2c3e50;">👤 Quinn</h4>
                         <p style="margin: 5px 0; color: #7f8c8d; font-size: 0.9em;">
-                            35yr Male • Instagram
+                            36yr Female • Twitter
                         </p>
                     </div>
                     <div class="prediction-number">#1</div>
@@ -717,10 +731,10 @@
                 
                 <div class="prediction-emotion">
                     <div style="font-size: 3em; text-align: center; margin: 15px 0;">
-                        😠
+                        😊
                     </div>
                     <div style="text-align: center; font-size: 1.5em; font-weight: bold; color: #e74c3c; margin-bottom: 10px;">
-                        Anger
+                        Happiness
                     </div>
                 </div>
                 
@@ -730,8 +744,8 @@
                         <span style="font-weight: bold; color: #e74c3c;">❓ Low</span>
                     </div>
                     <div class="confidence-bar-bg">
-                        <div class="confidence-bar-fill" style="width: 31.0%; background: linear-gradient(90deg, #e74c3c, #c0392b);">
-                            <span class="confidence-text">31.0%</span>
+                        <div class="confidence-bar-fill" style="width: 24.0%; background: linear-gradient(90deg, #e74c3c, #c0392b);">
+                            <span class="confidence-text">24.0%</span>
                         </div>
                     </div>
                 </div>
@@ -739,27 +753,27 @@
                 <div class="user-stats">
                     <div class="stat-item">
                         <div class="stat-icon">⏱️</div>
-                        <div class="stat-value">106 min</div>
+                        <div class="stat-value">120 min</div>
                         <div class="stat-label">Daily Usage</div>
                     </div>
                     <div class="stat-item">
                         <div class="stat-icon">📝</div>
-                        <div class="stat-value">5</div>
+                        <div class="stat-value">14</div>
                         <div class="stat-label">Posts/Day</div>
                     </div>
                     <div class="stat-item">
                         <div class="stat-icon">👍</div>
-                        <div class="stat-value">39</div>
+                        <div class="stat-value">130</div>
                         <div class="stat-label">Likes</div>
                     </div>
                     <div class="stat-item">
                         <div class="stat-icon">💬</div>
-                        <div class="stat-value">30</div>
+                        <div class="stat-value">22</div>
                         <div class="stat-label">Comments</div>
                     </div>
                     <div class="stat-item">
                         <div class="stat-icon">✉️</div>
-                        <div class="stat-value">67</div>
+                        <div class="stat-value">8</div>
                         <div class="stat-label">Messages</div>
                     </div>
                 </div>
@@ -770,7 +784,7 @@
                         💡 Behavioral Insight
                     </div>
                     <div style="color: #555; font-size: 0.9em;">
-                        📊 Balanced social media usage pattern
+                        📱 Content creator - frequent poster
                     </div>
                 </div>
                 
@@ -780,9 +794,9 @@
                 <div class="prediction-header">
                     <div class="user-avatar">😢</div>
                     <div class="user-info">
-                        <h4 style="margin: 0; color: #2c3e50;">👤 Avery</h4>
+                        <h4 style="margin: 0; color: #2c3e50;">👤 Casey</h4>
                         <p style="margin: 5px 0; color: #7f8c8d; font-size: 0.9em;">
-                            57yr Female • LinkedIn
+                            49yr Non-binary • Telegram
                         </p>
                     </div>
                     <div class="prediction-number">#2</div>
@@ -803,8 +817,8 @@
                         <span style="font-weight: bold; color: #e74c3c;">❓ Low</span>
                     </div>
                     <div class="confidence-bar-bg">
-                        <div class="confidence-bar-fill" style="width: 35.0%; background: linear-gradient(90deg, #e74c3c, #c0392b);">
-                            <span class="confidence-text">35.0%</span>
+                        <div class="confidence-bar-fill" style="width: 26.0%; background: linear-gradient(90deg, #e74c3c, #c0392b);">
+                            <span class="confidence-text">26.0%</span>
                         </div>
                     </div>
                 </div>
@@ -812,27 +826,27 @@
                 <div class="user-stats">
                     <div class="stat-item">
                         <div class="stat-icon">⏱️</div>
-                        <div class="stat-value">106 min</div>
+                        <div class="stat-value">89 min</div>
                         <div class="stat-label">Daily Usage</div>
                     </div>
                     <div class="stat-item">
                         <div class="stat-icon">📝</div>
-                        <div class="stat-value">6</div>
+                        <div class="stat-value">2</div>
                         <div class="stat-label">Posts/Day</div>
                     </div>
                     <div class="stat-item">
                         <div class="stat-icon">👍</div>
-                        <div class="stat-value">24</div>
+                        <div class="stat-value">58</div>
                         <div class="stat-label">Likes</div>
                     </div>
                     <div class="stat-item">
                         <div class="stat-icon">💬</div>
-                        <div class="stat-value">13</div>
+                        <div class="stat-value">24</div>
                         <div class="stat-label">Comments</div>
                     </div>
                     <div class="stat-item">
                         <div class="stat-icon">✉️</div>
-                        <div class="stat-value">16</div>
+                        <div class="stat-value">72</div>
                         <div class="stat-label">Messages</div>
                     </div>
                 </div>
@@ -853,9 +867,9 @@
                 <div class="prediction-header">
                     <div class="user-avatar">😰</div>
                     <div class="user-info">
-                        <h4 style="margin: 0; color: #2c3e50;">👤 Riley</h4>
+                        <h4 style="margin: 0; color: #2c3e50;">👤 Taylor</h4>
                         <p style="margin: 5px 0; color: #7f8c8d; font-size: 0.9em;">
-                            14yr Non-binary • Snapchat
+                            35yr Non-binary • LinkedIn
                         </p>
                     </div>
                     <div class="prediction-number">#3</div>
@@ -876,8 +890,8 @@
                         <span style="font-weight: bold; color: #e74c3c;">❓ Low</span>
                     </div>
                     <div class="confidence-bar-bg">
-                        <div class="confidence-bar-fill" style="width: 37.0%; background: linear-gradient(90deg, #e74c3c, #c0392b);">
-                            <span class="confidence-text">37.0%</span>
+                        <div class="confidence-bar-fill" style="width: 24.0%; background: linear-gradient(90deg, #e74c3c, #c0392b);">
+                            <span class="confidence-text">24.0%</span>
                         </div>
                     </div>
                 </div>
@@ -885,27 +899,27 @@
                 <div class="user-stats">
                     <div class="stat-item">
                         <div class="stat-icon">⏱️</div>
-                        <div class="stat-value">296 min</div>
+                        <div class="stat-value">93 min</div>
                         <div class="stat-label">Daily Usage</div>
                     </div>
                     <div class="stat-item">
                         <div class="stat-icon">📝</div>
-                        <div class="stat-value">4</div>
+                        <div class="stat-value">7</div>
                         <div class="stat-label">Posts/Day</div>
                     </div>
                     <div class="stat-item">
                         <div class="stat-icon">👍</div>
-                        <div class="stat-value">48</div>
+                        <div class="stat-value">109</div>
                         <div class="stat-label">Likes</div>
                     </div>
                     <div class="stat-item">
                         <div class="stat-icon">💬</div>
-                        <div class="stat-value">15</div>
+                        <div class="stat-value">7</div>
                         <div class="stat-label">Comments</div>
                     </div>
                     <div class="stat-item">
                         <div class="stat-icon">✉️</div>
-                        <div class="stat-value">55</div>
+                        <div class="stat-value">41</div>
                         <div class="stat-label">Messages</div>
                     </div>
                 </div>
@@ -916,7 +930,7 @@
                         💡 Behavioral Insight
                     </div>
                     <div style="color: #555; font-size: 0.9em;">
-                        💡 Heavy social media engagement - highly active user
+                        📊 Balanced social media usage pattern
                     </div>
                 </div>
                 
@@ -925,7 +939,7 @@
         
         <div class="timestamp">
             🕒 Report generated automatically by Social Platform Emotion Prediction System<br>
-            📅 Saturday, November 08, 2025 at 04:13:53 PM
+            📅 Monday, November 10, 2025 at 11:20:07 AM
         </div>
     </div>
     
@@ -953,6 +967,136 @@
                     Plotly.newPlot('model-comparison-chart', singleModelData, singleModelLayout);
                 }}
             
+
+        // Confusion Matrix - Raw Counts
+        var cmData = [[0, 0, 0, 0, 0, 0, 0], [0, 9, 0, 0, 0, 0, 0], [0, 0, 21, 0, 1, 0, 0], [0, 0, 0, 15, 0, 0, 1], [0, 0, 0, 0, 13, 0, 0], [0, 0, 0, 0, 0, 27, 0], [0, 0, 0, 0, 0, 0, 14]];
+        var cmLabels = ['Aggression', 'Anger', 'Anxiety', 'Boredom', 'Happiness', 'Neutral', 'Sadness'];
+        var hoverTextsRaw = [['True: Aggression<br>Predicted: Aggression<br>Count: 0<br>Percentage: 0.0%<br>Type: TP (True Positive)', 'True: Aggression<br>Predicted: Anger<br>Count: 0<br>Percentage: 0.0%<br>Type: FN (False Negative)', 'True: Aggression<br>Predicted: Anxiety<br>Count: 0<br>Percentage: 0.0%<br>Type: FN (False Negative)', 'True: Aggression<br>Predicted: Boredom<br>Count: 0<br>Percentage: 0.0%<br>Type: FN (False Negative)', 'True: Aggression<br>Predicted: Happiness<br>Count: 0<br>Percentage: 0.0%<br>Type: FN (False Negative)', 'True: Aggression<br>Predicted: Neutral<br>Count: 0<br>Percentage: 0.0%<br>Type: FN (False Negative)', 'True: Aggression<br>Predicted: Sadness<br>Count: 0<br>Percentage: 0.0%<br>Type: FN (False Negative)'], ['True: Anger<br>Predicted: Aggression<br>Count: 0<br>Percentage: 0.0%<br>Type: FN (False Negative)', 'True: Anger<br>Predicted: Anger<br>Count: 9<br>Percentage: 100.0%<br>Type: TP (True Positive)', 'True: Anger<br>Predicted: Anxiety<br>Count: 0<br>Percentage: 0.0%<br>Type: FN (False Negative)', 'True: Anger<br>Predicted: Boredom<br>Count: 0<br>Percentage: 0.0%<br>Type: FN (False Negative)', 'True: Anger<br>Predicted: Happiness<br>Count: 0<br>Percentage: 0.0%<br>Type: FN (False Negative)', 'True: Anger<br>Predicted: Neutral<br>Count: 0<br>Percentage: 0.0%<br>Type: FN (False Negative)', 'True: Anger<br>Predicted: Sadness<br>Count: 0<br>Percentage: 0.0%<br>Type: FN (False Negative)'], ['True: Anxiety<br>Predicted: Aggression<br>Count: 0<br>Percentage: 0.0%<br>Type: FN (False Negative)', 'True: Anxiety<br>Predicted: Anger<br>Count: 0<br>Percentage: 0.0%<br>Type: FN (False Negative)', 'True: Anxiety<br>Predicted: Anxiety<br>Count: 21<br>Percentage: 95.5%<br>Type: TP (True Positive)', 'True: Anxiety<br>Predicted: Boredom<br>Count: 0<br>Percentage: 0.0%<br>Type: FN (False Negative)', 'True: Anxiety<br>Predicted: Happiness<br>Count: 1<br>Percentage: 4.5%<br>Type: FN (False Negative)', 'True: Anxiety<br>Predicted: Neutral<br>Count: 0<br>Percentage: 0.0%<br>Type: FN (False Negative)', 'True: Anxiety<br>Predicted: Sadness<br>Count: 0<br>Percentage: 0.0%<br>Type: FN (False Negative)'], ['True: Boredom<br>Predicted: Aggression<br>Count: 0<br>Percentage: 0.0%<br>Type: FN (False Negative)', 'True: Boredom<br>Predicted: Anger<br>Count: 0<br>Percentage: 0.0%<br>Type: FN (False Negative)', 'True: Boredom<br>Predicted: Anxiety<br>Count: 0<br>Percentage: 0.0%<br>Type: FN (False Negative)', 'True: Boredom<br>Predicted: Boredom<br>Count: 15<br>Percentage: 93.8%<br>Type: TP (True Positive)', 'True: Boredom<br>Predicted: Happiness<br>Count: 0<br>Percentage: 0.0%<br>Type: FN (False Negative)', 'True: Boredom<br>Predicted: Neutral<br>Count: 0<br>Percentage: 0.0%<br>Type: FN (False Negative)', 'True: Boredom<br>Predicted: Sadness<br>Count: 1<br>Percentage: 6.2%<br>Type: FN (False Negative)'], ['True: Happiness<br>Predicted: Aggression<br>Count: 0<br>Percentage: 0.0%<br>Type: FN (False Negative)', 'True: Happiness<br>Predicted: Anger<br>Count: 0<br>Percentage: 0.0%<br>Type: FN (False Negative)', 'True: Happiness<br>Predicted: Anxiety<br>Count: 0<br>Percentage: 0.0%<br>Type: FN (False Negative)', 'True: Happiness<br>Predicted: Boredom<br>Count: 0<br>Percentage: 0.0%<br>Type: FN (False Negative)', 'True: Happiness<br>Predicted: Happiness<br>Count: 13<br>Percentage: 100.0%<br>Type: TP (True Positive)', 'True: Happiness<br>Predicted: Neutral<br>Count: 0<br>Percentage: 0.0%<br>Type: FN (False Negative)', 'True: Happiness<br>Predicted: Sadness<br>Count: 0<br>Percentage: 0.0%<br>Type: FN (False Negative)'], ['True: Neutral<br>Predicted: Aggression<br>Count: 0<br>Percentage: 0.0%<br>Type: FN (False Negative)', 'True: Neutral<br>Predicted: Anger<br>Count: 0<br>Percentage: 0.0%<br>Type: FN (False Negative)', 'True: Neutral<br>Predicted: Anxiety<br>Count: 0<br>Percentage: 0.0%<br>Type: FN (False Negative)', 'True: Neutral<br>Predicted: Boredom<br>Count: 0<br>Percentage: 0.0%<br>Type: FN (False Negative)', 'True: Neutral<br>Predicted: Happiness<br>Count: 0<br>Percentage: 0.0%<br>Type: FN (False Negative)', 'True: Neutral<br>Predicted: Neutral<br>Count: 27<br>Percentage: 100.0%<br>Type: TP (True Positive)', 'True: Neutral<br>Predicted: Sadness<br>Count: 0<br>Percentage: 0.0%<br>Type: FN (False Negative)'], ['True: Sadness<br>Predicted: Aggression<br>Count: 0<br>Percentage: 0.0%<br>Type: FN (False Negative)', 'True: Sadness<br>Predicted: Anger<br>Count: 0<br>Percentage: 0.0%<br>Type: FN (False Negative)', 'True: Sadness<br>Predicted: Anxiety<br>Count: 0<br>Percentage: 0.0%<br>Type: FN (False Negative)', 'True: Sadness<br>Predicted: Boredom<br>Count: 0<br>Percentage: 0.0%<br>Type: FN (False Negative)', 'True: Sadness<br>Predicted: Happiness<br>Count: 0<br>Percentage: 0.0%<br>Type: FN (False Negative)', 'True: Sadness<br>Predicted: Neutral<br>Count: 0<br>Percentage: 0.0%<br>Type: FN (False Negative)', 'True: Sadness<br>Predicted: Sadness<br>Count: 14<br>Percentage: 100.0%<br>Type: TP (True Positive)']];
+        
+        var confusionHeatmapRaw = [{
+            z: cmData,
+            x: cmLabels,
+            y: cmLabels,
+            type: 'heatmap',
+            colorscale: [
+                [0, 'rgb(255, 255, 255)'],
+                [0.2, 'rgb(220, 240, 255)'],
+                [0.5, 'rgb(100, 180, 255)'],
+                [0.8, 'rgb(50, 100, 200)'],
+                [1, 'rgb(20, 50, 150)']
+            ],
+            text: cmData,
+            hovertext: hoverTextsRaw,
+            hoverinfo: 'text',
+            texttemplate: '%{text}',
+            textfont: {
+                size: 14,
+                color: 'white'
+            },
+            showscale: true,
+            colorbar: {
+                title: 'Count',
+                titleside: 'right'
+            }
+        }];
+        
+        var confusionLayoutRaw = {
+            title: '🔢 Raw Counts',
+            xaxis: {
+                title: 'Predicted Emotion',
+                side: 'bottom',
+                tickangle: -45
+            },
+            yaxis: {
+                title: 'True Emotion',
+                autorange: 'reversed'
+            },
+            font: { family: 'Segoe UI, sans-serif' },
+            height: 550,
+            margin: { l: 100, r: 100, t: 80, b: 100 }
+        };
+        
+        if (document.getElementById('confusion-matrix-heatmap-raw')) {
+            Plotly.newPlot('confusion-matrix-heatmap-raw', confusionHeatmapRaw, confusionLayoutRaw);
+        }
+        
+        // Confusion Matrix - Normalized Percentages with Enhanced Colors
+        var cmNormalized = [[0, 0, 0, 0, 0, 0, 0], [0.0, 100.0, 0.0, 0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 95.45454545454545, 0.0, 4.545454545454546, 0.0, 0.0], [0.0, 0.0, 0.0, 93.75, 0.0, 0.0, 6.25], [0.0, 0.0, 0.0, 0.0, 100.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0, 0.0, 100.0, 0.0], [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 100.0]];
+        var textAnnotations = [['0<br>(0.0%)', '0<br>(0.0%)', '0<br>(0.0%)', '0<br>(0.0%)', '0<br>(0.0%)', '0<br>(0.0%)', '0<br>(0.0%)'], ['0<br>(0.0%)', '9<br>(100.0%)', '0<br>(0.0%)', '0<br>(0.0%)', '0<br>(0.0%)', '0<br>(0.0%)', '0<br>(0.0%)'], ['0<br>(0.0%)', '0<br>(0.0%)', '21<br>(95.5%)', '0<br>(0.0%)', '1<br>(4.5%)', '0<br>(0.0%)', '0<br>(0.0%)'], ['0<br>(0.0%)', '0<br>(0.0%)', '0<br>(0.0%)', '15<br>(93.8%)', '0<br>(0.0%)', '0<br>(0.0%)', '1<br>(6.2%)'], ['0<br>(0.0%)', '0<br>(0.0%)', '0<br>(0.0%)', '0<br>(0.0%)', '13<br>(100.0%)', '0<br>(0.0%)', '0<br>(0.0%)'], ['0<br>(0.0%)', '0<br>(0.0%)', '0<br>(0.0%)', '0<br>(0.0%)', '0<br>(0.0%)', '27<br>(100.0%)', '0<br>(0.0%)'], ['0<br>(0.0%)', '0<br>(0.0%)', '0<br>(0.0%)', '0<br>(0.0%)', '0<br>(0.0%)', '0<br>(0.0%)', '14<br>(100.0%)']];
+        var hoverTextsNorm = [['True: Aggression<br>Predicted: Aggression<br>Percentage: 0.0%<br>Count: 0<br>Type: TP (True Positive)', 'True: Aggression<br>Predicted: Anger<br>Percentage: 0.0%<br>Count: 0<br>Type: FN (False Negative)', 'True: Aggression<br>Predicted: Anxiety<br>Percentage: 0.0%<br>Count: 0<br>Type: FN (False Negative)', 'True: Aggression<br>Predicted: Boredom<br>Percentage: 0.0%<br>Count: 0<br>Type: FN (False Negative)', 'True: Aggression<br>Predicted: Happiness<br>Percentage: 0.0%<br>Count: 0<br>Type: FN (False Negative)', 'True: Aggression<br>Predicted: Neutral<br>Percentage: 0.0%<br>Count: 0<br>Type: FN (False Negative)', 'True: Aggression<br>Predicted: Sadness<br>Percentage: 0.0%<br>Count: 0<br>Type: FN (False Negative)'], ['True: Anger<br>Predicted: Aggression<br>Percentage: 0.0%<br>Count: 0<br>Type: FN (False Negative)', 'True: Anger<br>Predicted: Anger<br>Percentage: 100.0%<br>Count: 9<br>Type: TP (True Positive)', 'True: Anger<br>Predicted: Anxiety<br>Percentage: 0.0%<br>Count: 0<br>Type: FN (False Negative)', 'True: Anger<br>Predicted: Boredom<br>Percentage: 0.0%<br>Count: 0<br>Type: FN (False Negative)', 'True: Anger<br>Predicted: Happiness<br>Percentage: 0.0%<br>Count: 0<br>Type: FN (False Negative)', 'True: Anger<br>Predicted: Neutral<br>Percentage: 0.0%<br>Count: 0<br>Type: FN (False Negative)', 'True: Anger<br>Predicted: Sadness<br>Percentage: 0.0%<br>Count: 0<br>Type: FN (False Negative)'], ['True: Anxiety<br>Predicted: Aggression<br>Percentage: 0.0%<br>Count: 0<br>Type: FN (False Negative)', 'True: Anxiety<br>Predicted: Anger<br>Percentage: 0.0%<br>Count: 0<br>Type: FN (False Negative)', 'True: Anxiety<br>Predicted: Anxiety<br>Percentage: 95.5%<br>Count: 21<br>Type: TP (True Positive)', 'True: Anxiety<br>Predicted: Boredom<br>Percentage: 0.0%<br>Count: 0<br>Type: FN (False Negative)', 'True: Anxiety<br>Predicted: Happiness<br>Percentage: 4.5%<br>Count: 1<br>Type: FN (False Negative)', 'True: Anxiety<br>Predicted: Neutral<br>Percentage: 0.0%<br>Count: 0<br>Type: FN (False Negative)', 'True: Anxiety<br>Predicted: Sadness<br>Percentage: 0.0%<br>Count: 0<br>Type: FN (False Negative)'], ['True: Boredom<br>Predicted: Aggression<br>Percentage: 0.0%<br>Count: 0<br>Type: FN (False Negative)', 'True: Boredom<br>Predicted: Anger<br>Percentage: 0.0%<br>Count: 0<br>Type: FN (False Negative)', 'True: Boredom<br>Predicted: Anxiety<br>Percentage: 0.0%<br>Count: 0<br>Type: FN (False Negative)', 'True: Boredom<br>Predicted: Boredom<br>Percentage: 93.8%<br>Count: 15<br>Type: TP (True Positive)', 'True: Boredom<br>Predicted: Happiness<br>Percentage: 0.0%<br>Count: 0<br>Type: FN (False Negative)', 'True: Boredom<br>Predicted: Neutral<br>Percentage: 0.0%<br>Count: 0<br>Type: FN (False Negative)', 'True: Boredom<br>Predicted: Sadness<br>Percentage: 6.2%<br>Count: 1<br>Type: FN (False Negative)'], ['True: Happiness<br>Predicted: Aggression<br>Percentage: 0.0%<br>Count: 0<br>Type: FN (False Negative)', 'True: Happiness<br>Predicted: Anger<br>Percentage: 0.0%<br>Count: 0<br>Type: FN (False Negative)', 'True: Happiness<br>Predicted: Anxiety<br>Percentage: 0.0%<br>Count: 0<br>Type: FN (False Negative)', 'True: Happiness<br>Predicted: Boredom<br>Percentage: 0.0%<br>Count: 0<br>Type: FN (False Negative)', 'True: Happiness<br>Predicted: Happiness<br>Percentage: 100.0%<br>Count: 13<br>Type: TP (True Positive)', 'True: Happiness<br>Predicted: Neutral<br>Percentage: 0.0%<br>Count: 0<br>Type: FN (False Negative)', 'True: Happiness<br>Predicted: Sadness<br>Percentage: 0.0%<br>Count: 0<br>Type: FN (False Negative)'], ['True: Neutral<br>Predicted: Aggression<br>Percentage: 0.0%<br>Count: 0<br>Type: FN (False Negative)', 'True: Neutral<br>Predicted: Anger<br>Percentage: 0.0%<br>Count: 0<br>Type: FN (False Negative)', 'True: Neutral<br>Predicted: Anxiety<br>Percentage: 0.0%<br>Count: 0<br>Type: FN (False Negative)', 'True: Neutral<br>Predicted: Boredom<br>Percentage: 0.0%<br>Count: 0<br>Type: FN (False Negative)', 'True: Neutral<br>Predicted: Happiness<br>Percentage: 0.0%<br>Count: 0<br>Type: FN (False Negative)', 'True: Neutral<br>Predicted: Neutral<br>Percentage: 100.0%<br>Count: 27<br>Type: TP (True Positive)', 'True: Neutral<br>Predicted: Sadness<br>Percentage: 0.0%<br>Count: 0<br>Type: FN (False Negative)'], ['True: Sadness<br>Predicted: Aggression<br>Percentage: 0.0%<br>Count: 0<br>Type: FN (False Negative)', 'True: Sadness<br>Predicted: Anger<br>Percentage: 0.0%<br>Count: 0<br>Type: FN (False Negative)', 'True: Sadness<br>Predicted: Anxiety<br>Percentage: 0.0%<br>Count: 0<br>Type: FN (False Negative)', 'True: Sadness<br>Predicted: Boredom<br>Percentage: 0.0%<br>Count: 0<br>Type: FN (False Negative)', 'True: Sadness<br>Predicted: Happiness<br>Percentage: 0.0%<br>Count: 0<br>Type: FN (False Negative)', 'True: Sadness<br>Predicted: Neutral<br>Percentage: 0.0%<br>Count: 0<br>Type: FN (False Negative)', 'True: Sadness<br>Predicted: Sadness<br>Percentage: 100.0%<br>Count: 14<br>Type: TP (True Positive)']];
+        
+        // Custom colorscale: green for TP diagonal, red/orange for errors
+        var customColors = [];
+        for (var i = 0; i < cmNormalized.length; i++) {
+            var rowColors = [];
+            for (var j = 0; j < cmNormalized[i].length; j++) {
+                if (i === j) {
+                    // Diagonal (TP): green scale based on percentage
+                    var pct = cmNormalized[i][j];
+                    if (pct >= 95) rowColors.push('rgb(39, 174, 96)');  // Dark green
+                    else if (pct >= 85) rowColors.push('rgb(46, 204, 113)');  // Green
+                    else if (pct >= 75) rowColors.push('rgb(88, 214, 141)');  // Light green
+                    else rowColors.push('rgb(130, 224, 170)');  // Very light green
+                } else {
+                    // Off-diagonal (errors): red/orange scale
+                    var pct = cmNormalized[i][j];
+                    if (pct === 0) rowColors.push('rgb(255, 255, 255)');  // White
+                    else if (pct < 5) rowColors.push('rgb(255, 235, 205)');  // Very light orange
+                    else if (pct < 10) rowColors.push('rgb(255, 178, 102)');  // Light orange
+                    else if (pct < 20) rowColors.push('rgb(255, 127, 80)');  // Orange
+                    else rowColors.push('rgb(231, 76, 60)');  // Red
+                }
+            }
+            customColors.push(rowColors);
+        }
+        
+        var confusionHeatmapNorm = [{
+            z: cmNormalized,
+            x: cmLabels,
+            y: cmLabels,
+            type: 'heatmap',
+            colorscale: [
+                [0, 'rgb(255, 255, 255)'],
+                [0.5, 'rgb(255, 200, 100)'],
+                [1, 'rgb(231, 76, 60)']
+            ],
+            text: textAnnotations,
+            hovertext: hoverTextsNorm,
+            hoverinfo: 'text',
+            texttemplate: '%{text}',
+            textfont: {
+                size: 12,
+                color: 'black'
+            },
+            showscale: true,
+            colorbar: {
+                title: 'Percentage (%)',
+                titleside: 'right'
+            },
+            zmin: 0,
+            zmax: 100
+        }];
+        
+        var confusionLayoutNorm = {
+            title: '📊 Row-Normalized Percentages (Green=TP, Red=Errors)',
+            xaxis: {
+                title: 'Predicted Emotion',
+                side: 'bottom',
+                tickangle: -45
+            },
+            yaxis: {
+                title: 'True Emotion',
+                autorange: 'reversed'
+            },
+            font: { family: 'Segoe UI, sans-serif' },
+            height: 550,
+            margin: { l: 100, r: 100, t: 80, b: 100 }
+        };
+        
+        if (document.getElementById('confusion-matrix-heatmap-normalized')) {
+            Plotly.newPlot('confusion-matrix-heatmap-normalized', confusionHeatmapNorm, confusionLayoutNorm);
+        }
+        
     </script>
 </body>
 </html>

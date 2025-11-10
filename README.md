@@ -365,13 +365,27 @@ The enhanced script now generates:
 7. **Encoding Information**: Categorical variable mappings
 8. **Performance Metrics**: Detailed classification report for best model
 9. **ROC-AUC Score**: Overall discrimination capability
-10. **Feature Importance Rankings**: Tabular ranking for winner model
-11. **Top Features Ranking**: Most predictive behaviors
-12. **Emotion Label Mapping**: Class encoding reference
+10. **Confusion Matrix**: Enhanced dual-view visualization
+    - **Raw Counts**: Actual prediction counts per emotion
+    - **Normalized Percentages**: Row-normalized distribution (each row sums to 100%)
+    - **Color Coding**: Green for correct predictions (TP), red/orange for errors
+    - **Interactive Heatmaps**: Hover tooltips with detailed metrics
+    - **Per-Class Metrics**: TP/FP/FN/TN breakdown for each emotion
+11. **Feature Importance Rankings**: Tabular ranking for winner model
+12. **Top Features Ranking**: Most predictive behaviors
+13. **Emotion Label Mapping**: Class encoding reference
 
 ### 🎭 **Prediction Demonstrations**:
-13. **Sample Predictions**: Demo predictions for various user types
-14. **Interactive System**: User input prompts for real-time predictions
+14. **Sample Predictions**: Demo predictions for various user types
+15. **Interactive System**: User input prompts for real-time predictions
+
+### 🌐 **HTML Dashboard Features** (NEW):
+- **Dual Confusion Matrix Heatmaps**: Side-by-side raw counts and normalized percentages
+- **Interactive Plotly Charts**: Hover over cells for detailed prediction information
+- **Enhanced Color Scheme**: Visual distinction between correct predictions and errors
+- **Comprehensive Metrics Tables**: Per-class TP/FP/FN/TN statistics
+- **Error Analysis**: Top misclassifications and confidence-based accuracy
+- **Responsive Design**: Professional dashboard that opens automatically in browser
 
 ## 🎯 Applications
 
@@ -488,5 +502,5 @@ Created for Drexel University Assignment 3 - Social Platform Analysis
 
 ---
 
-*Last Updated: November 8, 2025*
-*Final Version: Production-Ready AI System with Clean Datasets*
+*Last Updated: November 10, 2025*
+*Current Version: Production-Ready AI System with Enhanced Confusion Matrix Visualization*
