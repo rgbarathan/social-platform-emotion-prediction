@@ -1223,7 +1223,7 @@ def generate_results_webpage(results_df, best_model_name, best_accuracy, feature
         return chart_js
 
     def generate_confusion_matrix_html(cm, labels):
-        """Render confusion matrix as an HTML table and Plotly heatmap"""
+        """Render confusion matrix with both raw counts and normalized percentage heatmaps"""
         if cm is None or labels is None:
             return "<p style='color:#666;'>Confusion matrix unavailable.</p>", ""
         # Header
@@ -1249,33 +1249,61 @@ def generate_results_webpage(results_df, best_model_name, best_accuracy, feature
         </table>
         """
         
-        # Generate Plotly heatmap JavaScript
         # Convert cm to Python list for JS
         cm_list = cm.tolist() if hasattr(cm, 'tolist') else [[int(v) for v in row] for row in cm]
         labels_list = [str(l) for l in labels]
         
-        # Build hover text with TP/FP/FN annotations
-        hover_texts = []
-        total = sum(sum(row) for row in cm_list)
+        # Calculate row-normalized percentages
+        cm_normalized = []
+        text_annotations = []
+        hover_texts_raw = []
+        hover_texts_norm = []
+        
         for i, true_label in enumerate(labels_list):
-            row_texts = []
+            row_sum = sum(cm_list[i])
+            norm_row = []
+            text_row = []
+            hover_row_raw = []
+            hover_row_norm = []
+            
             for j, pred_label in enumerate(labels_list):
                 count = cm_list[i][j]
+                percentage = (count / row_sum * 100) if row_sum > 0 else 0
+                norm_row.append(percentage)
+                
+                # Text annotation: "count (pct%)"
+                text_row.append(f"{count}<br>({percentage:.1f}%)")
+                
+                # Determine cell type
                 if i == j:
                     cell_type = "TP (True Positive)"
                 else:
-                    cell_type = "FN (False Negative)" if j != i else "FP (False Positive)"
-                hover_text = f"True: {true_label}<br>Predicted: {pred_label}<br>Count: {count}<br>Type: {cell_type}"
-                row_texts.append(hover_text)
-            hover_texts.append(row_texts)
+                    cell_type = "FN (False Negative)"
+                
+                # Hover text for raw count heatmap
+                hover_row_raw.append(
+                    f"True: {true_label}<br>Predicted: {pred_label}<br>"
+                    f"Count: {count}<br>Percentage: {percentage:.1f}%<br>Type: {cell_type}"
+                )
+                
+                # Hover text for normalized heatmap
+                hover_row_norm.append(
+                    f"True: {true_label}<br>Predicted: {pred_label}<br>"
+                    f"Percentage: {percentage:.1f}%<br>Count: {count}<br>Type: {cell_type}"
+                )
+            
+            cm_normalized.append(norm_row)
+            text_annotations.append(text_row)
+            hover_texts_raw.append(hover_row_raw)
+            hover_texts_norm.append(hover_row_norm)
         
         heatmap_js = f"""
-        // Confusion Matrix Heatmap
+        // Confusion Matrix - Raw Counts
         var cmData = {cm_list};
         var cmLabels = {labels_list};
-        var hoverTexts = {hover_texts};
+        var hoverTextsRaw = {hover_texts_raw};
         
-        var confusionHeatmap = [{{
+        var confusionHeatmapRaw = [{{
             z: cmData,
             x: cmLabels,
             y: cmLabels,
@@ -1288,7 +1316,7 @@ def generate_results_webpage(results_df, best_model_name, best_accuracy, feature
                 [1, 'rgb(20, 50, 150)']
             ],
             text: cmData,
-            hovertext: hoverTexts,
+            hovertext: hoverTextsRaw,
             hoverinfo: 'text',
             texttemplate: '%{{text}}',
             textfont: {{
@@ -1302,8 +1330,8 @@ def generate_results_webpage(results_df, best_model_name, best_accuracy, feature
             }}
         }}];
         
-        var confusionLayout = {{
-            title: 'Confusion Matrix Heatmap',
+        var confusionLayoutRaw = {{
+            title: '🔢 Raw Counts',
             xaxis: {{
                 title: 'Predicted Emotion',
                 side: 'bottom',
@@ -1314,12 +1342,89 @@ def generate_results_webpage(results_df, best_model_name, best_accuracy, feature
                 autorange: 'reversed'
             }},
             font: {{ family: 'Segoe UI, sans-serif' }},
-            height: 600,
-            margin: {{ l: 100, r: 100, t: 100, b: 100 }}
+            height: 550,
+            margin: {{ l: 100, r: 100, t: 80, b: 100 }}
         }};
         
-        if (document.getElementById('confusion-matrix-heatmap')) {{
-            Plotly.newPlot('confusion-matrix-heatmap', confusionHeatmap, confusionLayout);
+        if (document.getElementById('confusion-matrix-heatmap-raw')) {{
+            Plotly.newPlot('confusion-matrix-heatmap-raw', confusionHeatmapRaw, confusionLayoutRaw);
+        }}
+        
+        // Confusion Matrix - Normalized Percentages with Enhanced Colors
+        var cmNormalized = {cm_normalized};
+        var textAnnotations = {text_annotations};
+        var hoverTextsNorm = {hover_texts_norm};
+        
+        // Custom colorscale: green for TP diagonal, red/orange for errors
+        var customColors = [];
+        for (var i = 0; i < cmNormalized.length; i++) {{
+            var rowColors = [];
+            for (var j = 0; j < cmNormalized[i].length; j++) {{
+                if (i === j) {{
+                    // Diagonal (TP): green scale based on percentage
+                    var pct = cmNormalized[i][j];
+                    if (pct >= 95) rowColors.push('rgb(39, 174, 96)');  // Dark green
+                    else if (pct >= 85) rowColors.push('rgb(46, 204, 113)');  // Green
+                    else if (pct >= 75) rowColors.push('rgb(88, 214, 141)');  // Light green
+                    else rowColors.push('rgb(130, 224, 170)');  // Very light green
+                }} else {{
+                    // Off-diagonal (errors): red/orange scale
+                    var pct = cmNormalized[i][j];
+                    if (pct === 0) rowColors.push('rgb(255, 255, 255)');  // White
+                    else if (pct < 5) rowColors.push('rgb(255, 235, 205)');  // Very light orange
+                    else if (pct < 10) rowColors.push('rgb(255, 178, 102)');  // Light orange
+                    else if (pct < 20) rowColors.push('rgb(255, 127, 80)');  // Orange
+                    else rowColors.push('rgb(231, 76, 60)');  // Red
+                }}
+            }}
+            customColors.push(rowColors);
+        }}
+        
+        var confusionHeatmapNorm = [{{
+            z: cmNormalized,
+            x: cmLabels,
+            y: cmLabels,
+            type: 'heatmap',
+            colorscale: [
+                [0, 'rgb(255, 255, 255)'],
+                [0.5, 'rgb(255, 200, 100)'],
+                [1, 'rgb(231, 76, 60)']
+            ],
+            text: textAnnotations,
+            hovertext: hoverTextsNorm,
+            hoverinfo: 'text',
+            texttemplate: '%{{text}}',
+            textfont: {{
+                size: 12,
+                color: 'black'
+            }},
+            showscale: true,
+            colorbar: {{
+                title: 'Percentage (%)',
+                titleside: 'right'
+            }},
+            zmin: 0,
+            zmax: 100
+        }}];
+        
+        var confusionLayoutNorm = {{
+            title: '📊 Row-Normalized Percentages (Green=TP, Red=Errors)',
+            xaxis: {{
+                title: 'Predicted Emotion',
+                side: 'bottom',
+                tickangle: -45
+            }},
+            yaxis: {{
+                title: 'True Emotion',
+                autorange: 'reversed'
+            }},
+            font: {{ family: 'Segoe UI, sans-serif' }},
+            height: 550,
+            margin: {{ l: 100, r: 100, t: 80, b: 100 }}
+        }};
+        
+        if (document.getElementById('confusion-matrix-heatmap-normalized')) {{
+            Plotly.newPlot('confusion-matrix-heatmap-normalized', confusionHeatmapNorm, confusionLayoutNorm);
         }}
         """
         
@@ -1730,12 +1835,24 @@ def generate_results_webpage(results_df, best_model_name, best_accuracy, feature
 
             <!-- Confusion Matrix -->
             <div class="chart-container">
-                <h3>🧩 Confusion Matrix</h3>
+                <h3>🧩 Confusion Matrix Visualizations</h3>
                 <p style="color: #666; margin-bottom: 15px;">
-                    Rows are true classes; columns are predicted classes. Diagonal cells show True Positives (TP), off-diagonal show False Negatives (FN) and False Positives (FP).
+                    Rows represent true emotions; columns represent predicted emotions. 
+                    <strong>Diagonal cells (green)</strong> = True Positives (correct predictions). 
+                    <strong>Off-diagonal cells (red/orange)</strong> = Misclassifications.
                 </p>
-                <div id="confusion-matrix-heatmap" style="width: 100%; height: 600px;"></div>
-                <h4 style="margin-top: 25px;">📊 Detailed Counts</h4>
+                
+                <!-- Side by side heatmaps -->
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 25px;">
+                    <div>
+                        <div id="confusion-matrix-heatmap-raw" style="width: 100%; height: 550px;"></div>
+                    </div>
+                    <div>
+                        <div id="confusion-matrix-heatmap-normalized" style="width: 100%; height: 550px;"></div>
+                    </div>
+                </div>
+                
+                <h4 style="margin-top: 25px;">📊 Detailed Counts Table</h4>
                 {cm_table_html}
             </div>
 
