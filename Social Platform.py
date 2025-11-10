@@ -346,6 +346,22 @@ def display_performance_results(y_test, y_pred, y_proba, model_name):
         for i, l in enumerate(labels):
             row = " ".join([f"{int(v):>10}" for v in cm[i]])
             print(f"{str(l):>5} {row}")
+        # Per-class TN/FP/FN/TP summary
+        try:
+            total = int(np.sum(cm))
+            print(f"\n┌─────────────────────────────────────────────────────────────────────┐")
+            print(f"│                   🔎 PER-CLASS CONFUSION COUNTS (TP/FP/FN/TN)       │")
+            print(f"└─────────────────────────────────────────────────────────────────────┘")
+            print(f"{'Emotion':<12} {'TP':>6} {'FP':>6} {'FN':>6} {'TN':>8}")
+            print("─" * 50)
+            for k, name in enumerate(labels):
+                tp = int(cm[k, k])
+                fn = int(np.sum(cm[k, :]) - tp)
+                fp = int(np.sum(cm[:, k]) - tp)
+                tn = int(total - (tp + fp + fn))
+                print(f"{name:<12} {tp:>6} {fp:>6} {fn:>6} {tn:>8}")
+        except Exception as e:
+            print(f"⚠️ Could not compute per-class counts: {e}")
         # Compute top confusions (off-diagonal)
         try:
             off_diag = []
