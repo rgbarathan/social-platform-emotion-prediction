@@ -1271,7 +1271,7 @@ def generate_results_webpage(results_df, best_model_name, best_accuracy, feature
         
         heatmap_js = f"""
         // Confusion Matrix Heatmap
-        var cmData = [{cm_list}];
+        var cmData = {cm_list};
         var cmLabels = {labels_list};
         var hoverTexts = {hover_texts};
         
