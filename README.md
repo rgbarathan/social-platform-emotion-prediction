@@ -32,17 +32,26 @@ Project Social Platform/
 ├── README.md                                   # Project documentation
 ├── social_platform_results_dashboard.html      # Auto-generated results dashboard 🌐
 ├── social_platform_model_comparison_dashboard.html # Model comparison dashboard 🌐
-└── dataset/
-    ├── train.csv                               # Clean training data (924 samples)
-    ├── val.csv                                 # Clean validation data (132 samples)
-    ├── test.csv                                # Clean test data (101 samples)
-    └── original_backup/                        # Backup of original corrupted files from Kaggle
-        ├── train_original.csv
-        ├── val_original.csv
-        └── test_original.csv
+├── dataset/
+│   ├── train.csv                               # Clean training data (924 samples)
+│   ├── val.csv                                 # Clean validation data (132 samples)
+│   ├── test.csv                                # Clean test data (101 samples)
+│   └── original_backup/                        # Backup of original corrupted files from Kaggle
+│       ├── train_original.csv
+│       ├── val_original.csv
+│       └── test_original.csv
+├── docs/                                       # Development documentation
+│   ├── GITHUB_SETUP.md
+│   └── MODEL_COMPARISON_SUMMARY.md
+└── examples/                                   # Legacy example scripts (now integrated into main)
+    ├── dynamic_demo.py
+    ├── menu_update.py
+    └── predict_examples.py
 ```
 
 **Critical Dataset Usage Warning**: Use ONLY `dataset/train.csv`, `dataset/val.csv`, and `dataset/test.csv` for any training, validation, evaluation, or reproduction. The `dataset/original_backup/` folder contains the unprocessed (corrupted) source files preserved strictly for audit and transparency. Do **not** load or model against those originals; they violate the cleaned data assumptions (types, ranges, labels) relied on by the code.
+
+**Note**: The `examples/` folder contains legacy standalone scripts that are now fully integrated into the main script. The `docs/` folder contains development documentation and setup notes.
 
 ## 📊 Dataset Information
 
