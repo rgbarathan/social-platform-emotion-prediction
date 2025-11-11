@@ -448,7 +448,52 @@ The enhanced script now generates:
 - **Data Quality**: Current dataset represents industry-standard clean data practices and validation procedures
 - **Academic Integrity**: Full attribution to original Kaggle source with transparent documentation of all preprocessing steps
 
-## 🔄 Future Enhancements
+## �️ Troubleshooting
+
+### Common Issues & Solutions:
+
+#### **File Not Found Errors**
+```bash
+# Ensure you're in the correct directory
+pwd  # Should show: .../Project Social Platform
+ls   # Should show: Social Platform.py, requirements.txt, dataset/
+```
+
+#### **Module Import Errors**
+```bash
+# Ensure virtual environment is activated
+source .venv/bin/activate  # macOS/Linux
+# .venv\Scripts\activate   # Windows
+
+# Reinstall requirements
+pip install -r requirements.txt
+```
+
+#### **Dataset Missing**
+```bash
+# Verify dataset files exist
+ls dataset/
+# Should show: train.csv, val.csv, test.csv, original_backup/
+```
+
+#### **Python Version Issues**
+```bash
+# Check Python version
+python3 --version  # Should be 3.8+
+```
+
+#### **Permission Issues (macOS)**
+```bash
+# If you get permission errors
+chmod +x "Social Platform.py"
+```
+
+#### **Dashboard Won't Open**
+- HTML dashboards should auto-open in your default browser
+- If not, manually open: `social_platform_results_dashboard.html`
+- Try a different browser if rendering issues occur
+
+## �🔄 Future Enhancements
 
 ### Potential Improvements:
 - **Real-time Prediction**: API development for live emotion detection
@@ -507,5 +552,5 @@ Created for Drexel University Assignment 3 - Social Platform Analysis
 
 ---
 
-*Last Updated: November 10, 2025*
+*Last Updated: November 11, 2025*
 *Current Version: Production-Ready AI System with Enhanced Confusion Matrix Visualization*
